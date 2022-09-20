@@ -171,6 +171,7 @@ public class SplitActivity extends AppCompatActivity {
 
         } else {
             requestPermission();
+            System.out.println("已取得权限");
         }
 
 
