@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/MyApplication/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/MyApplication/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/MyApplication/app/src/main/res/layout/activity_result.xml" value="0.264" />
+        <entry key="..\:/MyApplication/app/src/main/res/layout/activity_split.xml" value="0.2" />
+        <entry key="..\:/Users/renji/大创/youhuaguo/MyApplication/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/renji/大创/youhuaguo/MyApplication/app/src/main/res/layout/activity_result.xml" value="0.2006340579710145" />
+        <entry key="..\:/try/MyApplication/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
+        <entry key="..\:/try/MyApplication/app/src/main/res/layout/activity_result.xml" value="0.16666666666666666" />
+        <entry key="..\:/try/MyApplication/app/src/main/res/layout/base_choice_mode_list.xml" value="0.24114583333333334" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/drawable/ic___.xml" value="0.1665" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/drawable/ic_____.xml" value="0.14" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/drawable/ic_____yiqingdongtai.xml" value="0.16" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/drawable/ic___stop.xml" value="0.1665" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/drawable/ic_nlsasrbag________.xml" value="0.1665" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/drawable/ic_startrecord.xml" value="0.1815" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/drawable/shanchu.xml" value="0.1815" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/drawable/stop_btn.xml" value="0.126" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/layout/Drawer.xml" value="0.24114583333333334" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/layout/activity_epidemic.xml" value="0.2" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/layout/activity_result.xml" value="0.264" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/layout/activity_school.xml" value="0.1" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/layout/activity_school2.xml" value="0.24114583333333334" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/layout/activity_split.xml" value="0.24114583333333334" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/layout/item_dropdown.xml" value="0.18645833333333334" />
+        <entry key="..\:/youhuaguo/MyApplication/app/src/main/res/layout/item_select.xml" value="0.18645833333333334" />
+      </map>
+    </option>
+  </component>
+  <component name="FindBugsConfigurable">
+    <option name="make" value="true" />
+    <option name="effort" value="default" />
+    <option name="priority" value="Medium" />
+    <option name="excludeFilter" value="" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="SuppressionsComponent">
+    <option name="suppComments" value="[]" />
+  </component>
+</project>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EBEBEB"
+    android:orientation="vertical">
+
+    <com.example.myapplication2.Wave.WaveSurfaceView
+        android:id="@+id/wavesfv"
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"/>
+
+    <com.example.myapplication2.Wave.WaveformView
+        android:id="@+id/waveview"
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        android:visibility="invisible" />
+
+    <Chronometer
+        android:id="@+id/tv2_2"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/wavesfv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="%s"
+        android:textSize="24sp" />
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="323dp"
+        android:layout_below="@id/tv2_2"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <!--        <Button-->
+        <!--            android:id="@+id/bt2_1"-->
+        <!--            android:layout_width="56dp"-->
+        <!--            android:layout_height="56dp"-->
+        <!--            android:layout_margin="30dp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:background="@drawable/bofang"-->
+        <!--            android:foreground="?actionBarItemBackground"-->
+        <!--            android:theme="@style/RippleWhite1"-->
+        <!--            tools:ignore="ButtonStyle" />-->
+
+        <Button
+            android:id="@+id/bt2_2"
+            android:layout_width="142dp"
+            android:layout_height="142dp"
+            android:layout_alignParentEnd="true"
+
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="154dp"
+            android:layout_marginBottom="91dp"
+            android:layout_weight="1"
+            android:background="@drawable/ic___stop" />
+
+        <Button
+            android:id="@+id/bt2_3"
+            android:layout_width="77dp"
+            android:layout_height="75dp"
+            android:layout_alignEnd="@+id/bt2_2"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="160dp"
+            android:layout_marginEnd="-100dp"
+            android:layout_weight="1"
+            android:background="@drawable/ic_nlsasrbag________" />
+
+    </RelativeLayout>
+</RelativeLayout>

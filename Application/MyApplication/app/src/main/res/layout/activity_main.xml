@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#EBEBEB">
+
+    <!--    <ImageView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="480dp"-->
+    <!--        android:id="@+id/image_view"-->
+    <!--        android:background="@drawable/fangkongzhinan" />-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="480dp">
+
+        <com.example.myapplication2.MyViewPager
+            android:id="@+id/looper_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffff" />
+
+        <LinearLayout
+            android:id="@+id/ponits_container"
+            android:gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!--            <View-->
+            <!--                android:layout_width="40px"-->
+            <!--                android:layout_height="40px"-->
+            <!--                android:background="@drawable/shape_point_selected"/>-->
+
+            <!--            <View-->
+            <!--                android:layout_width="40px"-->
+            <!--                android:layout_height="40px"-->
+            <!--                android:layout_marginLeft="20px"-->
+            <!--                android:background="@drawable/shape_point_selected"/>-->
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <ListView
+        android:visibility="gone"
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:layout_margin="0dp"
+        android:background="#ffffff" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/bt1_1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="0dp"
+            android:background="@drawable/kaishiluyin1"
+            android:theme="@style/RippleWhite"
+            android:foreground="?android:selectableItemBackground"
+            android:src="@drawable/kaishiluyin1" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <Button
+                android:id="@+id/quanxian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="157dp"
+                android:layout_marginBottom="10dp"
+                android:background="#ccffff"
+                android:onClick="requestPermission"
+                android:text="权限申请" />
+
+            <Button
+                android:id="@+id/chaxun"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="41dp"
+                android:layout_marginBottom="84dp"
+                android:layout_toStartOf="@+id/quanxian"
+                android:background="#ccffff"
+                android:text="疫情动态" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        tools:srcCompat="@tools:sample/backgrounds/scenic" />-->
+</LinearLayout>

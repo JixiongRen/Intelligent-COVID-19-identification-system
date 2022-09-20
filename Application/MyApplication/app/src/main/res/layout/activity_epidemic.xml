@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".epidemicActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:text="地区选择："
+            android:textSize="19sp" />
+    </LinearLayout>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_height="45dp"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_marginStart="250dp"-->
+<!--        android:layout_marginTop="50dp">-->
+
+<!--        <Spinner-->
+<!--            android:id="@+id/qu"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="45dp"-->
+<!--            android:dropDownVerticalOffset="45dp"-->
+<!--            android:spinnerMode="dropdown" />-->
+<!--    </LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="50dp">
+
+        <Spinner
+            android:id="@+id/shi"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:dropDownVerticalOffset="45dp"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp">
+
+        <Spinner
+            android:id="@+id/shen"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:dropDownVerticalOffset="45dp"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/diqu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="107dp"
+        android:text="地区：" />
+
+    <Button
+        android:id="@+id/yiqing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="55dp"
+        android:text="查询"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="184dp"
+        android:layout_marginEnd="54dp"
+        android:text="更新"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/school"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ic_yiqingxijie"
+
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/realschool"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="320dp"
+        android:layout_marginEnd="10dp"
+
+        android:background="@drawable/ic_school"
+        android:textSize="20sp" />
+
+    <RelativeLayout
+        android:layout_width="411dp"
+        android:layout_height="494dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="-2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="-1dp">
+
+        <TextView
+            android:id="@+id/siwang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="71dp"
+            android:text="新增死亡："
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/quezhen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="11dp"
+            android:text="新增确诊："
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/zhiyu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="133dp"
+            android:text="治愈："
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/DataTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="223dp"
+            android:text="数据更新时间："
+            android:textSize="20sp" />
+
+
+        <TextView
+            android:id="@+id/fengxiandiqu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="323dp"
+            android:text="地区风险等级："
+            android:textSize="20sp" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

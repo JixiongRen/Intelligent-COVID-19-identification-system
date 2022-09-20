@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">COVID19检测</string>
+    <string name="recode">开始录音</string>
+</resources>
