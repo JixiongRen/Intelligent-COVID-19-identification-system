@@ -82,7 +82,7 @@ public class resultActivity extends AppCompatActivity {
     public double[] fpData;
     public double[] fltHamm;//
     public AudFrame[] audFrame;//
-//    public ArrayList<Integer> WavStart = new ArrayList<>();//音频开始
+    //    public ArrayList<Integer> WavStart = new ArrayList<>();//音频开始
 //    public ArrayList<Integer> WavEnd = new ArrayList<>();//音频结束
     public double maxSte;//最大能量
     public double[] maxData;//
@@ -106,13 +106,14 @@ public class resultActivity extends AppCompatActivity {
         if(!dir.exists()){
             dir.mkdirs();
         }
+        mytv3_3=(TextView) findViewById(R.id.tv3_3);
         PATHOF=dir.getPath();
         mytv3_2 = findViewById(R.id.tv3_2);
         NetResult = findViewById(R.id.netResult);
         Bundle bundle = getIntent().getExtras();
         //String string = Objects.requireNonNull(bundle).getString("0");
         //String string=Environment.getExternalStorageDirectory().getAbsolutePath() +
-              //  "/Music/" + "Audio1" + ".wav";
+        //  "/Music/" + "Audio1" + ".wav";
         mstring=bundle.getString("3");
 
 //        mstring = string;//WAV文件地址
@@ -123,7 +124,7 @@ public class resultActivity extends AppCompatActivity {
             File f = new File(mstring);
             //wavFile=new RandomAccessFile(f,"r");
             //wavFile = new RandomAccessFile(new File("C:\\Users\\LiChao\\Desktop\\test.wav"), "r");
-             wavFile=new RandomAccessFile(new File("/storage/emulated/0/Android/data/com.example.myapplication2/files/sounds/test.wav"),"r");
+            wavFile=new RandomAccessFile(new File("/storage/emulated/0/Android/data/com.example.myapplication2/files/sounds/test.wav"),"r");
             fileLength = wavFile.length();
 
             wavFile.seek(22);  //文件偏移22个位
@@ -212,7 +213,7 @@ public class resultActivity extends AppCompatActivity {
 
 
         //跳转
-  //      Button mbtn3_1 = findViewById(R.id.bt3_1);
+        //      Button mbtn3_1 = findViewById(R.id.bt3_1);
         Button mbtn3_2 = findViewById(R.id.bt3_2);
         Button mbtn3_3= findViewById(R.id.bt3_3);
 //        mbtn3_1.setOnClickListener(new View.OnClickListener() {
@@ -301,8 +302,8 @@ public class resultActivity extends AppCompatActivity {
                     }
 
                 }
-                mytv3_3=findViewById(R.id.tv3_3);
-                mytv3_3.setText(a+"\n"+b+"\n"+c+"\n"+d);
+
+                //mytv3_3.setText(a+"\n"+b+"\n"+c+"\n"+d);
 
             }
         });
@@ -335,7 +336,7 @@ public class resultActivity extends AppCompatActivity {
         };
         TimerHandler.postDelayed(myTimerRun,1000);
     }
-//25600
+    //25600
     @Override
     protected void onStart() {
         super.onStart();
@@ -384,9 +385,9 @@ public class resultActivity extends AppCompatActivity {
             newLabel[0]=labelProbArray;
             tflite.run(AudioFile, newLabel);//找到了
             /*
-            * 这里就是模型的入口
-            *
-            * */
+             * 这里就是模型的入口
+             *
+             * */
             long end = System.currentTimeMillis();
             long time = end - start;
             float[] results = new float[labelProbArray[0].length];
@@ -454,7 +455,7 @@ public class resultActivity extends AppCompatActivity {
 
             String show_distinct_text = "服务器端ResNet识别结果为：" + onlineResult + "\n识别准确率：" + online_rate + "\n\n本地LeafGhostNet识别结果为：" + localResult + "\n识别准确率为：" + local_rate;
             String show_text = "融合后的识别结果为： "  + mixedResult + "\n识别准确率： " + identy_rate ;
-            System.out.println("=======" + show_text);
+            System.out.println("=====" + show_distinct_text);
             mytv3_3.setText(show_text);
             mytv3_2.setText(show_distinct_text);
 //            String dirPath_time = dir.getPath();
@@ -542,7 +543,7 @@ public class resultActivity extends AppCompatActivity {
         }
         int x = 0;//
         for (int i = 0; i < FrmNum; i++) {
-   //     for (int i = 0; (i < FrmNum)&&(x<fpData.length); i++) {
+            //     for (int i = 0; (i < FrmNum)&&(x<fpData.length); i++) {
             audFrame[i].fltFrame = new double[FRM_LEN];
 
             // audFrame[i].fltFrame[j]代表某一帧某一值
@@ -628,46 +629,46 @@ public class resultActivity extends AppCompatActivity {
             }
 
 
-                System.out.print("客户端IP："+socket.getLocalAddress());
-                System.out.println("  客户端端口："+socket.getLocalPort());
-                System.out.print("服务器IP："+socket.getInetAddress());
-                System.out.println("  服务器端口："+socket.getPort());
+            System.out.print("客户端IP："+socket.getLocalAddress());
+            System.out.println("  客户端端口："+socket.getLocalPort());
+            System.out.print("服务器IP："+socket.getInetAddress());
+            System.out.println("  服务器端口："+socket.getPort());
 
-                try {
-                    FileInputStream fileInputStream=new FileInputStream(scrWav);
+            try {
+                FileInputStream fileInputStream=new FileInputStream(scrWav);
 
-                    OutputStream outputStream=socket.getOutputStream();
-                    byte[] bytes=new byte[1024];
-                    while ((readlen=fileInputStream.read(bytes))!=-1){
-                        outputStream.write(bytes,0,readlen);
-                    }
-                    System.out.println("WAV文件 OK");
-                    socket.shutdownOutput();
-
-
-                    //这里总是会出现连接失败
-                    InputStream in=socket.getInputStream();
-                    FileOutputStream out=new FileOutputStream(PATHOF+"/train_result.txt");
-                    //可能是时间太短了，考虑适当休眠
-                    sleep(500);
-                    byte[] bytes1=new byte[2048];
-                    int read;
-                    while((read= in.read(bytes1))!=-1){
-                        out.write(bytes1,0,read);
-                    }
+                OutputStream outputStream=socket.getOutputStream();
+                byte[] bytes=new byte[1024];
+                while ((readlen=fileInputStream.read(bytes))!=-1){
+                    outputStream.write(bytes,0,readlen);
+                }
+                System.out.println("WAV文件 OK");
+                socket.shutdownOutput();
 
 
+                //这里总是会出现连接失败
+                InputStream in=socket.getInputStream();
+                FileOutputStream out=new FileOutputStream(PATHOF+"/train_result.txt");
+                //可能是时间太短了，考虑适当休眠
+                sleep(500);
+                byte[] bytes1=new byte[2048];
+                int read;
+                while((read= in.read(bytes1))!=-1){
+                    out.write(bytes1,0,read);
+                }
 
-                    System.out.println("TXT文件 OK");
-                    socket.close();
-                    resultActivity.this.runOnUiThread(new Runnable() {
+
+
+                System.out.println("TXT文件 OK");
+                socket.close();
+                resultActivity.this.runOnUiThread(new Runnable() {
                     public void run() {
                         NetResult.setText(result1);
                     }
                 });
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
 //            if (netok) {
 //                resultActivity.this.runOnUiThread(new Runnable() {
 //                    public void run() {
