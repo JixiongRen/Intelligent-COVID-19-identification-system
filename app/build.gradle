@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        release {
-            storeFile file('G:\\apk\\myapplication.jks')
-            storePassword '123456'
-            keyAlias '1'
-            keyPassword '456789'
-        }
-    }
+//    signingConfigs {
+//        release {
+//            storeFile file('G:\\apk\\myapplication.jks')
+//            storePassword '123456'
+//            keyAlias '1'
+//            keyPassword '456789'
+//        }
+//    }
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.example.myapplication2"
@@ -42,6 +42,7 @@ dependencies {
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'org.tensorflow:tensorflow-lite:+'
     implementation 'com.google.android.material:material:1.4.0'
+    implementation files('libs/BaiduLBS_Android.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
