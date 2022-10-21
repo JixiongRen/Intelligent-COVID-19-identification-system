@@ -188,6 +188,13 @@
             android:text="地区风险等级："
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/position_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="142dp"
+            android:layout_below="@id/fengxiandiqu"
+            android:text="TextView" />
+
 
     </RelativeLayout>
 

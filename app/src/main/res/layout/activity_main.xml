@@ -104,6 +104,14 @@
                 android:layout_toStartOf="@+id/quanxian"
                 android:background="#ccffff"
                 android:text="疫情动态" />
+
+            <TextView
+                android:id="@+id/position_text_view"
+                android:visibility="visible"
+                android:layout_width="395dp"
+                android:layout_height="75dp"
+                android:text="233"
+                android:layout_below="@id/quanxian" />
         </RelativeLayout>
 
 

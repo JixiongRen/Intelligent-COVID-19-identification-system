@@ -14,70 +14,110 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 //hello world
 public class MainActivity extends AppCompatActivity {
-        private  static final String TAG = "MainActivity";
-        private String AudioSavePathInDevice = null;  //初始化，并准备录音保存路径
-        private String AudioSavePath = null;
-        private String pcmFile=null;//初始化，并准备大的保存路径
-        private ListView listView;
-        public String PATHOF;
-        private MyViewPager mLoopPager;
-        private LooperPagerAdapter mLooperPagerAdapter;
-        private Handler mHandler;
-        private boolean mIsTouch = false;
-        private LinearLayout mPointContainer;
+    private static final String TAG = "MainActivity";
+    private String AudioSavePathInDevice = null;  //初始化，并准备录音保存路径
+    private String AudioSavePath = null;
+    private String pcmFile = null;//初始化，并准备大的保存路径
+    private ListView listView;
+    public String PATHOF;
+    private MyViewPager mLoopPager;
+    private LooperPagerAdapter mLooperPagerAdapter;
+    private Handler mHandler;
+    private boolean mIsTouch = false;
+    private LinearLayout mPointContainer;
 
-        private static List<Integer> sPics = new ArrayList<>();
+    private static List<Integer> sPics = new ArrayList<>();
+    public LocationClient mLocationClient ;
+    private TextView positionText;
 
-        static {
-            sPics.add(R.mipmap.pic1);
-            sPics.add(R.mipmap.pic2);
-            sPics.add(R.mipmap.pic3);
+
+    static {
+        sPics.add(R.mipmap.pic1);
+        sPics.add(R.mipmap.pic2);
+        sPics.add(R.mipmap.pic3);
     }
+
 
     //刷新
     //Environment.getExternalStorageDirectory().getAbsolutePath()能
     @Override
     protected void onStart() {
         super.onStart();
-        File dir=new File(getExternalFilesDir(null),"sounds");
-        if(!dir.exists()){
+        File dir = new File(getExternalFilesDir(null), "sounds");
+        if (!dir.exists()) {
             dir.mkdirs();
         }
 
         listInitial(listaNagran());
         AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() +
                 "/Music/" + "Audio" + CreateRandomAudioFileName() + ".wav";
-        pcmFile=Environment.getExternalStorageDirectory().getAbsolutePath() +
-                "/Music/" + "Audio" + CreateRandomAudioFileName()+".pcm";
+        pcmFile = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                "/Music/" + "Audio" + CreateRandomAudioFileName() + ".pcm";
     }//onStart()用于在活动从不可见变为可见时，加载可见资源
-        //当我们需要在活动的可见生命周期中使用系统资源时，应该在OnStart中注册
+    //当我们需要在活动的可见生命周期中使用系统资源时，应该在OnStart中注册
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        initView();
+
+        positionText = (TextView) findViewById(R.id.position_text_view);
+        List<String> permissionList = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.
+                permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.
+                permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.
+                permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!permissionList.isEmpty()) {
+            String[] permissions = permissionList.toArray(new String[permissionList.
+                    size()]);
+            ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);
+        } else {
+                requestLocation();
+        }
+
         initView();
+
+
         mHandler = new Handler();
         AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" +
-                        "Audio" + "0" + ".wav";
+                "Audio" + "0" + ".wav";
         AudioSavePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/";
 
         try {
             if (listaNagran() != null) {
                 listInitial(listaNagran());
             }
-        } catch(NullPointerException e) {
+            System.out.println("正常内容已经执行0");
+        } catch (NullPointerException e) {
             System.out.println("空指针错误");
         }
 
@@ -110,6 +150,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void requestLocation() {
+        initLocation();
+        mLocationClient.start();
+    }
+
+    private void initLocation() {
+        try {
+            mLocationClient = new LocationClient(getApplicationContext());
+            mLocationClient.registerLocationListener(new MyLocationListener());
+            LocationClientOption option = new LocationClientOption();
+            option.setScanSpan(0);
+            option.setIsNeedAddress(true);
+            mLocationClient.setLocOption(option);
+        } catch(Exception e){
+            Log.d(TAG, e + "initLocation: error");
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mLocationClient.stop();
+    }
+
     //录音列表
     @SuppressLint("Assert")
     ArrayList<String> listaNagran() {
@@ -123,11 +188,13 @@ public class MainActivity extends AppCompatActivity {
 //              System.out.println(inFile.getName());
                 lista.add(inFile.getName());  //返回音频列表
             }
-        } catch(NullPointerException e){
+            System.out.println("尝试catch 1");
+        } catch (NullPointerException e) {
             System.out.println("baocuo");
         }
         return lista;
     }
+
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -138,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        Log.d(TAG,"onDetachedFromWindow");
+        Log.d(TAG, "onDetachedFromWindow");
         mHandler.removeCallbacks(mLooperTask);
     }
 
@@ -147,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if (!mIsTouch) {
                 //切换ViewPager到下一个图
-                int currentItem =  mLoopPager.getCurrentItem();
+                int currentItem = mLoopPager.getCurrentItem();
                 mLoopPager.setCurrentItem(++currentItem, true);
             }
             mHandler.postDelayed(this, 10000);
@@ -162,17 +229,17 @@ public class MainActivity extends AppCompatActivity {
         mLooperPagerAdapter.setData(sPics);
         mLoopPager.setAdapter(mLooperPagerAdapter);
         //mLoopPager.setOnPageChangeListener(this);
-       // mLoopPager.setOnViewPagerTouchListener(this);
+        // mLoopPager.setOnViewPagerTouchListener(this);
         mPointContainer = (LinearLayout) this.findViewById(R.id.ponits_container);
         //根据图片数量添加点的个数
         insertPoint();
-        mLoopPager.setCurrentItem(mLooperPagerAdapter.getDataRealSize() * 100,false);
+        mLoopPager.setCurrentItem(mLooperPagerAdapter.getDataRealSize() * 100, false);
     }
 
     private void insertPoint() {
         for (int i = 0; i < sPics.size(); i++) {
             View point = new View(this);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(40,40);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(40, 40);
             layoutParams.leftMargin = 20;
             point.setBackground(getResources().getDrawable(R.drawable.shape_point_normal));
             point.setLayoutParams(layoutParams);
@@ -206,45 +273,115 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-        public void requestPermission(View view) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.INTERNET}, 200);
-        }
 
-        @Override
-        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            if (requestCode == 200) {
-                if (permissions[0].equals(Manifest.permission.RECORD_AUDIO) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (permissions[1].equals(Manifest.permission.READ_EXTERNAL_STORAGE) && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                        if (permissions[2].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
-                            if (permissions[3].equals(Manifest.permission.INTERNET) && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
-                                Toast.makeText(this, "已授权", Toast.LENGTH_SHORT).show();
-                            }
+    public void requestPermission(View view) {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET}, 200);
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 200) {
+            if (permissions[0].equals(Manifest.permission.RECORD_AUDIO) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (permissions[1].equals(Manifest.permission.READ_EXTERNAL_STORAGE) && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    if (permissions[2].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE) && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                        if (permissions[3].equals(Manifest.permission.INTERNET) && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
+                            Toast.makeText(this, "已授权", Toast.LENGTH_SHORT).show();
                         }
                     }
-
                 }
+
             }
         }
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0) {
+                    for (int result : grantResults) {
+                        if (result != PackageManager.PERMISSION_GRANTED) {
+                            try {
+                                Toast.makeText(this, "必须同意所有权限才能使用本程序",
+                                        Toast.LENGTH_SHORT).show();
+                                finish();
+                            } catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                            return;
+                        }
+                    }
+                } else {
+                    Toast.makeText(this, "发生未知错误", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
+            default:
+        }
+    }
+
+    public class MyLocationListener extends BDAbstractLocationListener {
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            runOnUiThread(() -> {
+                StringBuilder currentPosition = new StringBuilder();
+                currentPosition.append("纬度：").append(location.getLatitude()).
+                        append("\n");
+                currentPosition.append("经线：").append(location.getLongitude()).
+                        append("\n");
+                currentPosition.append("国家：").append(location.getCountry()).
+                        append("\n");
+                currentPosition.append("省（直辖市）：").append(location.getProvince()).
+                        append("\n");
+                currentPosition.append("地级市（直辖市区）：").append(location.getCity()).
+                        append("\n");
+                currentPosition.append("区（县级市）：").append(location.getDistrict()).
+                        append("\n");
+                currentPosition.append("街道：").append(location.getStreet()).
+                        append("\n");
+                currentPosition.append("定位方式：");
+                if (location.getLocType() == BDLocation.TypeGpsLocation) {
+                    currentPosition.append("GPS");
+                } else if (location.getLocType() ==
+                        BDLocation.TypeNetWorkLocation) {
+                    currentPosition.append("网络");
+                }
+                System.out.println("位置是： " + currentPosition);
+                positionText.setText(currentPosition);
+            });
+        }
+
+        //     @Override
+        public void onConnectHotSpotMessage(String s, int i) {
+        }
+    }
 
     //产生序列数
-    public String CreateRandomAudioFileName(){
+    public String CreateRandomAudioFileName() {
         ArrayList<String> nazwy = listaNagran();
         int numer = nazwy.size();
-        String nazwa = "Audio"+numer+".3gp";
+        String nazwa = "Audio" + numer + ".3gp";
         int i = 0;
-        while(i<nazwy.size()) {
-            if(nazwy.get(i).equals(nazwa)) {
+        while (i < nazwy.size()) {
+            if (nazwy.get(i).equals(nazwa)) {
                 numer++;
-                nazwa = "Audio"+numer+".3gp";
-                i=0;
+                nazwa = "Audio" + numer + ".3gp";
+                i = 0;
             }
-            i+=1;
+            i += 1;
         }
         return Integer.toString(numer);
     }
 
+//    //以强制指定只使用GPS进行定位修改位置结束
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        mLocationClient.stop();
+//    }
+
 
 }
+
+
 
 
