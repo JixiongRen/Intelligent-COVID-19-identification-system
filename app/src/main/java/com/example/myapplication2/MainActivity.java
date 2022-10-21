@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mPointContainer;
 
     private static List<Integer> sPics = new ArrayList<>();
-    public LocationClient mLocationClient ;
+    public LocationClient mLocationClient;
     private TextView positionText;
 
 
@@ -157,15 +157,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void initLocation() {
         try {
+            LocationClient.setAgreePrivacy(true);
             mLocationClient = new LocationClient(getApplicationContext());
+        } catch (Exception e) {
+            System.out.println("=============================================================");
+            System.out.println(e.getMessage());
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        }
+        try{
+            LocationClient.setAgreePrivacy(true);
             mLocationClient.registerLocationListener(new MyLocationListener());
             LocationClientOption option = new LocationClientOption();
             option.setScanSpan(0);
             option.setIsNeedAddress(true);
             mLocationClient.setLocOption(option);
-        } catch(Exception e){
-            Log.d(TAG, e + "initLocation: error");
+        } catch(Exception e) {
+            Log.d(TAG, "initLocation: 实例化错误");
         }
+
     }
 
 
