@@ -91,7 +91,6 @@ public class epidemicActivity extends AppCompatActivity {
                                     {"乌鲁木齐市","克拉玛依市","吐鲁番市","哈密市"},
                                     {"昆明市","曲靖市","昭通市","玉溪市","楚雄州市","红河州市","文山州市","普洱市","版纳州市","大理州市","保山市","德宏州市","丽江市","怒江州市","迪庆州市","临沧市"},
                                     {"杭州市","宁波市","温州市","绍兴市","湖州市","嘉兴市","金华市","衢州市","台州市","丽水市","舟山市"},
-
     };
 
     @Override
@@ -110,13 +109,15 @@ public class epidemicActivity extends AppCompatActivity {
         DataTime=(TextView)findViewById(R.id.DataTime);
         sheninitSpinner();
 
-        area=shen+" "+shi+" "+qu;
+//        area=shen+" "+shi+" "+qu;
+        area = MainActivity.KeyLocationInfo[0].substring(0, MainActivity.KeyLocationInfo[0].length() - 1) + " " + MainActivity.KeyLocationInfo[2] + " " + MainActivity.KeyLocationInfo[2];
         button=(Button) findViewById(R.id.yiqing);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StartMain(PATHOF,shi.substring(0, shi.length()-1));
-                System.out.println(shi.substring(0, shi.length()-1));
+//                StartMain(PATHOF,shi.substring(0, shi.length()-1));
+//                System.out.println(shi.substring(0, shi.length()-1));
+                StartMain(PATHOF,MainActivity.KeyLocationInfo[1].substring(0, MainActivity.KeyLocationInfo[1].length() - 1));
                 quezhen.setText("新增确诊："+quezhen1);
                 siwang.setText("新增死亡："+siwang1);
                 zhiyu.setText("治愈："+zhiyu1);
@@ -170,7 +171,8 @@ public class epidemicActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 shen=shenArray[i];
-                area=shen+" "+shi+" "+qu;
+//                area=shen+" "+shi+" "+qu;
+                area = MainActivity.KeyLocationInfo[0].substring(0, MainActivity.KeyLocationInfo[0].length() - 1) + " " + MainActivity.KeyLocationInfo[2] + " " + MainActivity.KeyLocationInfo[2];
                 textView.setText("地区："+area);
                 shiArray=shiArray1[i];
                 shiinitSpinner();
@@ -202,7 +204,8 @@ public class epidemicActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 shi=shiArray[i];
-                area=shen+" "+shi+" "+qu;
+//                area=shen+" "+shi+" "+qu;
+                area = MainActivity.KeyLocationInfo[0].substring(0, MainActivity.KeyLocationInfo[0].length() - 1) + " " + MainActivity.KeyLocationInfo[2] + " " + MainActivity.KeyLocationInfo[2];
                 //quinitSpinner();
                 textView.setText("地区："+area);
 
