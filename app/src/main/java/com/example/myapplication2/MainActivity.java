@@ -30,9 +30,12 @@ import com.baidu.location.LocationClientOption;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 //hello world
 public class MainActivity extends AppCompatActivity {
+    public static StringBuilder currentPosition = new StringBuilder();
+    public static String[] KeyLocationInfo = new String[3];
     private static final String TAG = "MainActivity";
     private String AudioSavePathInDevice = null;  //初始化，并准备录音保存路径
     private String AudioSavePath = null;
@@ -332,7 +335,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceiveLocation(BDLocation location) {
             runOnUiThread(() -> {
-                StringBuilder currentPosition = new StringBuilder();
                 currentPosition.append("纬度：").append(location.getLatitude()).
                         append("\n");
                 currentPosition.append("经线：").append(location.getLongitude()).
@@ -341,10 +343,13 @@ public class MainActivity extends AppCompatActivity {
                         append("\n");
                 currentPosition.append("省（直辖市）：").append(location.getProvince()).
                         append("\n");
+                KeyLocationInfo[0] = location.getProvince();
                 currentPosition.append("地级市（直辖市区）：").append(location.getCity()).
                         append("\n");
+                KeyLocationInfo[1] = location.getCity();
                 currentPosition.append("区（县级市）：").append(location.getDistrict()).
                         append("\n");
+                KeyLocationInfo[2] = location.getDistrict();
                 currentPosition.append("街道：").append(location.getStreet()).
                         append("\n");
                 currentPosition.append("定位方式：");
@@ -356,6 +361,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 System.out.println("位置是： " + currentPosition);
                 positionText.setText(currentPosition);
+                System.out.println("*********************");
+                System.out.println(Arrays.toString(KeyLocationInfo));
+                System.out.println("*********************");
             });
         }
 
