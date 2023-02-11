@@ -76,6 +76,7 @@ public class SplitActivity extends AppCompatActivity {
     int read;
     private float audioFloats[];
     public String PATHOF;
+    private String timeStamp;
     File file;
 
     File mFile;
@@ -236,7 +237,7 @@ public class SplitActivity extends AppCompatActivity {
                 String pattern = "yyyy-MM-dd-HH-mm-ss";
                 Long timestamp = System.currentTimeMillis();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-                String timeStamp = simpleDateFormat.format(new Date(timestamp));
+                 timeStamp = simpleDateFormat.format(new Date(timestamp));
                 System.out.println("This is time : " + timeStamp);
                 String wavFileName = "/" + timeStamp + "test.wav";
                 // 为保存时戳的txt文件命名并创建路径
@@ -332,6 +333,10 @@ public class SplitActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // 跳转到结果界面
                 Intent intent = new Intent(SplitActivity.this, resultActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("10",timeStamp);
+//               bundle.putString("1", String.valueOf(AudioTime));
+                intent.putExtras(bundle);
                 chronometer.stop();//停止计时
 //                if (waveCanvas != null){
 //                    waveCanvas.Stop();
