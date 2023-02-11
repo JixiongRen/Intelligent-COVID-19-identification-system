@@ -289,7 +289,7 @@ public class SplitActivity extends AppCompatActivity {
                 mLoadSoundFileThread = new Thread() {
                     public void run() {
                         try {
-                            mSoundFile = SoundFile.create(mFile.getAbsolutePath(),null);
+                             mSoundFile = SoundFile.create(mFile.getAbsolutePath(),null);
                             if (mSoundFile == null) {
                                 return;
                             }

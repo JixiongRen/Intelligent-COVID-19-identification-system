@@ -2,6 +2,7 @@ package com.example.myapplication2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -36,6 +38,12 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class resultActivity extends AppCompatActivity {
 
@@ -47,7 +55,7 @@ public class resultActivity extends AppCompatActivity {
     private static  float pos_rate_online;
     private static float mixed_neg_rate;
     private static float mixed_pos_rate;
-
+    private int stateOfMessage;
     //列表跳过来
     private float[][] AudioFile;
     private String mstring;
@@ -66,14 +74,20 @@ public class resultActivity extends AppCompatActivity {
     private double[] secondChannelArray; //array of samples from second (right) channel, if it exists
     private boolean isMono; // true if there is only one channel, i.e. signal is mono, not stereo
     private int duration; //duration of WAV file in seconds
+
+    private String userID = "123456";
+
+    private File WavFile;
     private SpectrogramView mytv3_1;
     private TextView mytv3_2;
     private TextView mytv3_3;
+    private TextView test_view;
     private TextView NetResult;
     private Interpreter tflite = null;
     private int[] ddims = {1, 3, 224, 224};//-------------------
     private List<String> resultLabel = new ArrayList<>();
     private String PATHOF;
+    private Button Query;
     public static double PI1 = 3.1415926536;//
     public static int FRM_LEN = 64000;//窗长/帧长
     public int FrmNum;//帧数
@@ -89,7 +103,7 @@ public class resultActivity extends AppCompatActivity {
     public int maxDataNum;
     String result0="上传：失败";
     String result1="上传：成功";
-
+    private final OkHttpClient client=new OkHttpClient();
 //
 //    @Override
 //    protected void onResume() {
@@ -115,9 +129,8 @@ public class resultActivity extends AppCompatActivity {
         //String string=Environment.getExternalStorageDirectory().getAbsolutePath() +
         //  "/Music/" + "Audio1" + ".wav";
         mstring=bundle.getString("3");
-
-//        mstring = string;//WAV文件地址
-
+        test_view=(TextView) findViewById(R.id.test_view);
+//       mstring = string;//WAV文件地址
 
         //读声音文件------------------------------------------------------------------------------------------------------------
         try {
@@ -190,9 +203,6 @@ public class resultActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
-
 //        WaveFileReader waveFileReader=new WaveFileReader(mstring);
 //        System.out.println("=============================================");
 //        System.out.println("是否读取成功："+waveFileReader.isSuccess());
@@ -216,6 +226,7 @@ public class resultActivity extends AppCompatActivity {
         //      Button mbtn3_1 = findViewById(R.id.bt3_1);
         Button mbtn3_2 = findViewById(R.id.bt3_2);
         Button mbtn3_3= findViewById(R.id.bt3_3);
+        Query=(Button) findViewById(R.id.Query_Button);
 //        mbtn3_1.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -250,8 +261,93 @@ public class resultActivity extends AppCompatActivity {
         mbtn3_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SendThread sendThread = new SendThread();
-                sendThread.start();
+                ProgressDialog progressDialog=new ProgressDialog(resultActivity.this);
+                progressDialog.setMessage("Sending...");
+                progressDialog.setCancelable(true);
+                progressDialog.show();
+                new Thread(){
+                    @Override
+                    public void run() {
+                        //目标服务器IP 202.182.112.88
+                        File f = new File(mstring);
+                        //创建RequestBody
+                        //RequestBody fileBody=RequestBody.create(MediaType.parse("image/jpeg"),ImageFile);
+                        RequestBody fileBody=RequestBody.create(MediaType.parse("application/octet-stream"),f);
+                        //构建MultipartBody
+                        MultipartBody requestBody=new MultipartBody.Builder()
+                                .setType(MultipartBody.FORM)
+                                .addFormDataPart("file",f.getName(),fileBody)
+                                .build();
+                        //构建请求
+                        Request request=new Request.Builder()
+                                .url("http://202.182.112.88:10002/upload_files/"+userID)
+                                .post(requestBody)
+                                .build();
+                        try (Response response=client.newCall(request).execute()){
+                            if(!response.isSuccessful()) throw new IOException("Unexpected code: "+response);
+
+                            if(response.isSuccessful()){
+                                Log.d("State", "Succeed");
+                                stateOfMessage=1;
+                                progressDialog.dismiss();
+                            }else{
+                                Log.d("State", "Fail");
+                                stateOfMessage=0;
+                                progressDialog.dismiss();
+                            }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //成功或失败后的UI操作
+                                    if(stateOfMessage==1){
+                                        Toast.makeText(resultActivity.this,"发送成功", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Toast.makeText(resultActivity.this,"发送失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+                //查询返回结果
+                Query.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //查询函数
+                        OkHttpClient okHttpClient=new OkHttpClient();
+                        Request request=new Request.Builder()
+                                .url("http://202.182.112.88:10002/result/"+userID)
+                                .build();
+                        //解析JSON数据
+                        //String jsontext="{\"Result\":\"Positive\"}";需要的JSON数据格式
+                        ProgressDialog progressDialog1=new ProgressDialog(resultActivity.this);
+                        progressDialog1.setMessage("查询中...");
+                        progressDialog1.setCancelable(true);
+                        progressDialog1.show();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Response response=okHttpClient.newCall(request).execute();
+                                    String jsontext=response.body().string();
+                                    System.out.println(jsontext);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            test_view.setText("Result:"+jsontext);
+                                            progressDialog1.dismiss();
+                                        }
+                                    });
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }).start();
+                    }
+                });
+
                 //可能是还没下载完
                 File f=new File(PATHOF+"/train_result.txt");
 
@@ -327,6 +423,7 @@ public class resultActivity extends AppCompatActivity {
                 }
                 request_permission();
                 readCacheLabelFromLocalFile();
+
                 predict();
 
 
@@ -384,6 +481,7 @@ public class resultActivity extends AppCompatActivity {
             float[][][] newLabel=new float[1][1][2];
             newLabel[0]=labelProbArray;
             tflite.run(AudioFile, newLabel);//找到了
+
             /*
              * 这里就是模型的入口
              *
@@ -416,10 +514,13 @@ public class resultActivity extends AppCompatActivity {
                 System.out.println("读取文件内容出错");
             }
 
-            neg_rate_online = Float.parseFloat(str_neg_rate_online);
-            pos_rate_online = Float.parseFloat(str_pos_rate_online);
+//            neg_rate_online = Float.parseFloat(str_neg_rate_online);
+//            pos_rate_online = Float.parseFloat(str_pos_rate_online);
 
-            mixed_neg_rate = (float) (0.5*neg_rate_local + 0.5*pos_rate_online);
+            neg_rate_online = (float) 0.6;
+            pos_rate_online = (float) 0.4;
+
+            mixed_neg_rate = (float) (0.5*neg_rate_local + 0.5*neg_rate_online);
             mixed_pos_rate = (float) (0.5*pos_rate_local + 0.5*pos_rate_online);
 
             String mixedResult;
@@ -607,78 +708,7 @@ public class resultActivity extends AppCompatActivity {
 
 
     //上传文件的类----------------------------------------------------------------------------------------
-    public class SendThread extends Thread {
-        Boolean netok=true;
-        @Override
-        public void run() {
-            int readlen;
-            String scrWav=mstring;
-            Socket socket= null;
-            try {
-                socket = new Socket();
-                socket.setSoTimeout(3000);
-                socket.connect(new InetSocketAddress("202.182.112.88",2000),100000);
-            } catch (IOException e) {
-                e.printStackTrace();
-                netok=false;
-                resultActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        NetResult.setText(result0);
-                    }
-                });
-            }
 
-
-            System.out.print("客户端IP："+socket.getLocalAddress());
-            System.out.println("  客户端端口："+socket.getLocalPort());
-            System.out.print("服务器IP："+socket.getInetAddress());
-            System.out.println("  服务器端口："+socket.getPort());
-
-            try {
-                FileInputStream fileInputStream=new FileInputStream(scrWav);
-
-                OutputStream outputStream=socket.getOutputStream();
-                byte[] bytes=new byte[1024];
-                while ((readlen=fileInputStream.read(bytes))!=-1){
-                    outputStream.write(bytes,0,readlen);
-                }
-                System.out.println("WAV文件 OK");
-                socket.shutdownOutput();
-
-
-                //这里总是会出现连接失败
-                InputStream in=socket.getInputStream();
-                FileOutputStream out=new FileOutputStream(PATHOF+"/train_result.txt");
-                //可能是时间太短了，考虑适当休眠
-                sleep(500);
-                byte[] bytes1=new byte[2048];
-                int read;
-                while((read= in.read(bytes1))!=-1){
-                    out.write(bytes1,0,read);
-                }
-
-
-
-                System.out.println("TXT文件 OK");
-                socket.close();
-                resultActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        NetResult.setText(result1);
-                    }
-                });
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-//            if (netok) {
-//                resultActivity.this.runOnUiThread(new Runnable() {
-//                    public void run() {
-//                        NetResult.setText(result1);
-//                    }
-//                });
-//            }
-
-        }
-    }
     public float get_neg_rate_local() {
         return resultActivity.neg_rate_local;
     }

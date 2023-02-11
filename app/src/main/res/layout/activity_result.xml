@@ -27,13 +27,14 @@
         android:textSize="15sp" />
 
     <TextView
+        android:id="@+id/test_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="13dp"
         android:layout_marginTop="41dp"
-        android:text="检测结果："
+        android:text="Result:"
         android:textSize="30sp" />
 
     <TextView
@@ -108,6 +109,7 @@
         <!--            tools:ignore="ButtonStyle" />-->
 
         <Button
+            tools:ignore="SpeakableTextPresentCheck"
             android:id="@+id/bt3_2"
             android:layout_width="124dp"
             android:layout_height="124dp"
@@ -119,10 +121,11 @@
             android:background="@drawable/ic_baseline_replay_24"
             android:foreground="?android:selectableItemBackground"
             android:theme="@style/RippleWhite"
-            tools:ignore="ButtonStyle" />
+            />
 
         <Button
             android:id="@+id/bt3_3"
+            tools:ignore="SpeakableTextPresentCheck"
             android:layout_width="113dp"
             android:layout_height="113dp"
             android:layout_alignParentTop="true"
@@ -132,7 +135,157 @@
             android:background="@drawable/ic_____"
             android:theme="@style/RippleWhite" />
 
+        <Button
+            android:id="@+id/Query_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bt3_3"
+            android:layout_centerHorizontal="true"
+            android:text="Query"
+            android:textAllCaps="false"
+            android:layout_marginTop="10dp"
+            />
+
 
     </RelativeLayout>
 
 </RelativeLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:background="#EBEBEB"-->
+    <!--    android:orientation="vertical">-->
+
+    <!--    <TextView-->
+    <!--        android:layout_width="150dp"-->
+    <!--        android:layout_height="30dp"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginStart="18dp"-->
+    <!--        android:layout_marginTop="124dp"-->
+    <!--        android:text="本地："-->
+    <!--        android:textSize="15sp" />-->
+
+    <!--    <TextView-->
+    <!--        android:layout_width="150dp"-->
+    <!--        android:layout_height="30dp"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginStart="229dp"-->
+    <!--        android:layout_marginTop="126dp"-->
+    <!--        android:text="服务器："-->
+    <!--        android:textSize="15sp" />-->
+
+    <!--    <TextView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginStart="13dp"-->
+    <!--        android:layout_marginTop="41dp"-->
+    <!--        android:text="检测结果："-->
+    <!--        android:textSize="30sp" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv3_2"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="212dp"-->
+
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginStart="3dp"-->
+    <!--        android:layout_marginLeft="20dp"-->
+    <!--        android:layout_marginTop="0dp"-->
+    <!--        android:layout_marginEnd="209dp"-->
+    <!--        android:layout_marginRight="20dp"-->
+    <!--        android:layout_marginBottom="343dp"-->
+    <!--        android:background="#ffffff" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv3_3"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="212dp"-->
+
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginStart="202dp"-->
+    <!--        android:layout_marginLeft="20dp"-->
+    <!--        android:layout_marginTop="0dp"-->
+    <!--        android:layout_marginEnd="0dp"-->
+    <!--        android:layout_marginRight="20dp"-->
+    <!--        android:layout_marginBottom="342dp"-->
+    <!--        android:background="#ffffff" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/netResult"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_centerVertical="true"-->
+    <!--        android:layout_marginStart="4dp"-->
+    <!--        android:layout_marginBottom="289dp"-->
+    <!--        android:text="上传："-->
+    <!--        android:textSize="15sp" />-->
+
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="268dp"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_marginStart="1dp"-->
+    <!--        android:layout_marginTop="453dp"-->
+    <!--        android:layout_marginBottom="10dp"-->
+    <!--        android:orientation="horizontal">-->
+
+    <!--        &lt;!&ndash;        <Button&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:id="@+id/bt3_1"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:layout_width="124dp"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:layout_height="124dp"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:layout_alignParentStart="true"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:layout_alignParentTop="true"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:layout_marginStart="17dp"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:layout_marginTop="9dp"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:layout_weight="1"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:background="@drawable/ic_round_delete_forever_24"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:foreground="?android:selectableItemBackground"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            android:theme="@style/RippleWhite"&ndash;&gt;-->
+    <!--        &lt;!&ndash;            tools:ignore="ButtonStyle" />&ndash;&gt;-->
+
+    <!--        <Button-->
+    <!--            android:id="@+id/bt3_2"-->
+    <!--            android:layout_width="124dp"-->
+    <!--            android:layout_height="124dp"-->
+    <!--            android:layout_alignParentTop="true"-->
+    <!--            android:layout_alignParentEnd="true"-->
+    <!--            android:layout_marginTop="12dp"-->
+    <!--            android:layout_marginEnd="241dp"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:background="@drawable/ic_baseline_replay_24"-->
+    <!--            android:foreground="?android:selectableItemBackground"-->
+    <!--            android:theme="@style/RippleWhite"-->
+    <!--            tools:ignore="ButtonStyle" />-->
+
+    <!--        <Button-->
+    <!--            android:id="@+id/bt3_3"-->
+    <!--            android:layout_width="113dp"-->
+    <!--            android:layout_height="113dp"-->
+    <!--            android:layout_alignParentTop="true"-->
+    <!--            android:layout_alignParentEnd="true"-->
+    <!--            android:layout_marginTop="18dp"-->
+    <!--            android:layout_marginEnd="61dp"-->
+    <!--            android:background="@drawable/ic_____"-->
+    <!--            android:theme="@style/RippleWhite" />-->
+
+
+    <!--    </RelativeLayout>-->
+
+    <!--</RelativeLayout>-->
