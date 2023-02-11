@@ -103,6 +103,7 @@ public class resultActivity extends AppCompatActivity {
     public int maxDataNum;
     String result0="上传：失败";
     String result1="上传：成功";
+    private String timeStamp;
     private final OkHttpClient client=new OkHttpClient();
 //
 //    @Override
@@ -129,15 +130,18 @@ public class resultActivity extends AppCompatActivity {
         //String string=Environment.getExternalStorageDirectory().getAbsolutePath() +
         //  "/Music/" + "Audio1" + ".wav";
         mstring=bundle.getString("3");
+        timeStamp=bundle.getString("10");
+
         test_view=(TextView) findViewById(R.id.test_view);
 //       mstring = string;//WAV文件地址
 
         //读声音文件------------------------------------------------------------------------------------------------------------
         try {
-            File f = new File(mstring);
+
             //wavFile=new RandomAccessFile(f,"r");
             //wavFile = new RandomAccessFile(new File("C:\\Users\\LiChao\\Desktop\\test.wav"), "r");
-            wavFile=new RandomAccessFile(new File("/storage/emulated/0/Android/data/com.example.myapplication2/files/sounds/test.wav"),"r");
+
+            wavFile=new RandomAccessFile(new File("/storage/emulated/0/Android/data/com.example.myapplication2/files/sounds/"+timeStamp+"test.wav"),"r");
             fileLength = wavFile.length();
 
             wavFile.seek(22);  //文件偏移22个位
@@ -269,7 +273,7 @@ public class resultActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //目标服务器IP 202.182.112.88
-                        File f = new File(mstring);
+                        File f = new File("/storage/emulated/0/Android/data/com.example.myapplication2/files/sounds/"+timeStamp+"test.wav");
                         //创建RequestBody
                         //RequestBody fileBody=RequestBody.create(MediaType.parse("image/jpeg"),ImageFile);
                         RequestBody fileBody=RequestBody.create(MediaType.parse("application/octet-stream"),f);
@@ -347,58 +351,6 @@ public class resultActivity extends AppCompatActivity {
                         }).start();
                     }
                 });
-
-                //可能是还没下载完
-                File f=new File(PATHOF+"/train_result.txt");
-
-                do {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } while (f.length()==0);
-
-
-                try {
-                    FileInputStream fileIn=new FileInputStream(PATHOF+"/train_result.txt");
-                    System.out.println(fileIn.toString());
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                File file=new File(PATHOF+"/train_result.txt");
-                FileInputStream in= null;
-                try {
-                    in = new FileInputStream(file);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                String result ="";
-                for(int i=0;i< file.length();i++){
-                    try {
-                        result=result+(char)in.read();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                String a=result.substring(0,8);
-                String b=result.substring(9,16);
-                String c=result.substring(17,25);
-                String d=result.substring(26,35);
-                String[] aa={a,b,c,d};
-                int p=0;//服务器中阳性个数
-                int n=0;//服务器中阴性个数
-                for(int i=0;i<aa.length;i++){
-                    if(aa[i].equalsIgnoreCase("positive")) {
-                        p = p + 1;
-                    }
-                    if(aa[i].equalsIgnoreCase("negative")) {
-                        n = n + 1;
-                    }
-
-                }
-
                 //mytv3_3.setText(a+"\n"+b+"\n"+c+"\n"+d);
 
             }
