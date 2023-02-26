@@ -33,8 +33,6 @@ public class LocationServices {
 //                navigateTo(location);
             }
         }
-
-        //     @Override
         public void onConnectHotSpotMessage(String s, int i) {
         }
     }

@@ -24,14 +24,12 @@ import androidx.core.content.ContextCompat;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-//hello world
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private String AudioSavePathInDevice = null;  //初始化，并准备录音保存路径
@@ -44,19 +42,14 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     private boolean mIsTouch = false;
     private LinearLayout mPointContainer;
-
     private static List<Integer> sPics = new ArrayList<>();
     public LocationClient mLocationClient;
     private TextView positionText;
-
-
     static {
         sPics.add(R.mipmap.pic1);
         sPics.add(R.mipmap.pic2);
         sPics.add(R.mipmap.pic3);
     }
-
-
     //刷新
     //Environment.getExternalStorageDirectory().getAbsolutePath()能
     @Override
@@ -68,20 +61,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         listInitial(listaNagran());
-        AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                "/Music/" + "Audio" + CreateRandomAudioFileName() + ".wav";
-        pcmFile = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                "/Music/" + "Audio" + CreateRandomAudioFileName() + ".pcm";
+        AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" + "Audio" + CreateRandomAudioFileName() + ".wav";
+        pcmFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" + "Audio" + CreateRandomAudioFileName() + ".pcm";
     }//onStart()用于在活动从不可见变为可见时，加载可见资源
-    //当我们需要在活动的可见生命周期中使用系统资源时，应该在OnStart中注册
+     //当我们需要在活动的可见生命周期中使用系统资源时，应该在OnStart中注册
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        initView();
-
         positionText = (TextView) findViewById(R.id.position_text_view);
         List<String> permissionList = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.
@@ -100,18 +89,11 @@ public class MainActivity extends AppCompatActivity {
             String[] permissions = permissionList.toArray(new String[permissionList.
                     size()]);
             ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);
-        } else {
-                requestLocation();
-        }
-
+        } else {requestLocation();}
         initView();
-
-
         mHandler = new Handler();
-        AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" +
-                "Audio" + "0" + ".wav";
+        AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" + "Audio" + "0" + ".wav";
         AudioSavePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/";
-
         try {
             if (listaNagran() != null) {
                 listInitial(listaNagran());
@@ -120,11 +102,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             System.out.println("空指针错误");
         }
-
-        AudioSavePathInDevice =
-                Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" +
-                        "Audio" + CreateRandomAudioFileName() + ".wav";
-
+        AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" + "Audio" + CreateRandomAudioFileName() + ".wav";
         //按钮跳转
         Button mbtn1_1 = findViewById(R.id.bt1_1);
         mbtn1_1.setOnClickListener(new View.OnClickListener() {
@@ -174,10 +152,7 @@ public class MainActivity extends AppCompatActivity {
         } catch(Exception e) {
             Log.d(TAG, "initLocation: 实例化错误");
         }
-
     }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -194,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             for (File inFile : files) {
                 assert true;
-//              System.out.println(inFile.getName());
                 lista.add(inFile.getName());  //返回音频列表
             }
             System.out.println("尝试catch 1");
@@ -237,8 +211,6 @@ public class MainActivity extends AppCompatActivity {
         mLooperPagerAdapter = new com.example.myapplication2.LooperPagerAdapter();
         mLooperPagerAdapter.setData(sPics);
         mLoopPager.setAdapter(mLooperPagerAdapter);
-        //mLoopPager.setOnPageChangeListener(this);
-        // mLoopPager.setOnViewPagerTouchListener(this);
         mPointContainer = (LinearLayout) this.findViewById(R.id.ponits_container);
         //根据图片数量添加点的个数
         insertPoint();
@@ -253,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
             point.setBackground(getResources().getDrawable(R.drawable.shape_point_normal));
             point.setLayoutParams(layoutParams);
             mPointContainer.addView(point);
-
         }
     }
 
@@ -263,22 +234,18 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, files);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String itemValue = (String) listView.getItemAtPosition(position);
                 AudioSavePathInDevice =
                         Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" + itemValue;
-//                listaPlikow.setText(itemValue);
                 // 跳转到信号结果
                 Intent intent = new Intent(MainActivity.this, resultActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("0", AudioSavePathInDevice);
-//                bundle.putString("1", String.valueOf(AudioTime));
                 intent.putExtras(bundle);
                 startActivity(intent);
-
             }
         });
     }
@@ -309,13 +276,11 @@ public class MainActivity extends AppCompatActivity {
                     for (int result : grantResults) {
                         if (result != PackageManager.PERMISSION_GRANTED) {
                             try {
-                                Toast.makeText(this, "必须同意所有权限才能使用本程序",
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "必须同意所有权限才能使用本程序", Toast.LENGTH_SHORT).show();
                                 finish();
                             } catch (Exception e){
                                 e.printStackTrace();
                             }
-
                             return;
                         }
                     }
@@ -359,9 +324,8 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        //     @Override
-        public void onConnectHotSpotMessage(String s, int i) {
-        }
+
+        public void onConnectHotSpotMessage(String s, int i) {}
     }
 
     //产生序列数
@@ -380,15 +344,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return Integer.toString(numer);
     }
-
-//    //以强制指定只使用GPS进行定位修改位置结束
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        mLocationClient.stop();
-//    }
-
-
 }
 
 

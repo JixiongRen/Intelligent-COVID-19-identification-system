@@ -43,19 +43,15 @@ public class PCMCovWavUtil {
         File baseFile = new File(basePath);
         if(!baseFile.exists())
             baseFile.mkdirs();
-
         pcmFile = new File(inFileName);
         wavFile = new File(outFileName);
-
         try{
             if (!pcmFile.exists())
                 pcmFile.createNewFile();
 
             if (!wavFile.exists())
                 wavFile.createNewFile();
-        }catch(IOException e){
-
-        }
+        }catch(IOException e){}
     }
 
     //转换函数
@@ -64,7 +60,6 @@ public class PCMCovWavUtil {
         if(twavFile.exists()){
             twavFile.delete();
         }
-
         FileInputStream in = null;
         FileOutputStream out = null;
         long totalAudioLen = 0;
@@ -77,7 +72,6 @@ public class PCMCovWavUtil {
         }else if (audioFormat == AudioFormat.ENCODING_PCM_8BIT){
             byteRate = 8 * audioRate * channels / 8;
         }
-
         byte[] data = new byte[bufferSize];
         try {
             in = new FileInputStream(inFileName);
@@ -98,10 +92,8 @@ public class PCMCovWavUtil {
             e.printStackTrace();
         }
     }
-
     //添加Wav头部信息
-    private void addWaveFileHeader(FileOutputStream out, long totalAudioLen, long totalDataLen, long longSampleRate,
-                                   int channels, long byteRate) throws IOException {
+    private void addWaveFileHeader(FileOutputStream out, long totalAudioLen, long totalDataLen, long longSampleRate, int channels, long byteRate) throws IOException {
         byte[] header = new byte[44];
         // RIFF 头表示
         header[0] = 'R';
@@ -164,7 +156,6 @@ public class PCMCovWavUtil {
         }else if (audioFormat == AudioFormat.ENCODING_PCM_8BIT){
             header[34] = 8;
         }
-
         header[35] = 0;
         //Data chunk
         header[36] = 'd';//data

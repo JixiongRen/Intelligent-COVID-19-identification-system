@@ -17,17 +17,5 @@ public class StartMain {
         for (List<String> oneLineData:listResult) {
             System.out.println(oneLineData);
         }
-
-//        System.out.println("\n\n");
-//
-//        String[][] arrayList = FileDatasExtracter.extractDataArrayFromFile(sourceFile,keys);
-//
-//        for (int i = 0; i < arrayList.length; i++) {
-//            for (int j = 0; j < arrayList[i].length; j++) {
-//                System.out.print(arrayList[i][j]);
-//                System.out.print(",");
-//            }
-//            System.out.println();
-//        }
     }
 }
