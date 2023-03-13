@@ -3,14 +3,15 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#9C27B0</item>
-        <item name="colorPrimaryDark">#9C27B0</item>
+        <item name="colorPrimary">#00BCD4</item>
+        <item name="colorPrimaryDark">#00BCD4</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">#FFFFFF</item>
     </style>
 
     <style name="RippleWhite">
         <item name="android:colorControlHighlight">#D8D8D8</item>
-        <item name="android:radius">50dp</item>
+        <item name="android:radius">80dp</item>
     </style>
 
     <style name="RippleWhite1">

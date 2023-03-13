@@ -14,10 +14,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.alibaba.fastjson.JSONObject;
+
 import org.tensorflow.lite.Interpreter;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,13 +36,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import com.alibaba.fastjson.JSONObject;
 
 public class resultActivity extends AppCompatActivity {
     ArrayList<Float> Negative = new ArrayList<Float>();
@@ -87,7 +92,7 @@ public class resultActivity extends AppCompatActivity {
     private String PATHOF;
     private Button Query;
     public static double PI1 = 3.1415926536;//
-    public static int FRM_LEN = 64000;//窗长/帧长
+    public static int FRM_LEN = 64000; //窗长/帧长
     public int FrmNum;//帧数
     public int dwSoundlen;//数据长度
     public static int FRM_SFT = 8000;// 窗移
@@ -99,31 +104,44 @@ public class resultActivity extends AppCompatActivity {
     public double maxSte;//最大能量
     public double[] maxData;//
     public int maxDataNum;
-    String result0="上传：失败";
-    String result1="上传：成功";
+    private final OkHttpClient client = new OkHttpClient();
+    String result0 = "上传：失败";
     private String timeStamp;
-    private final OkHttpClient client=new OkHttpClient();
+    String result1 = "上传：成功";
+
+    public static void showTextRes() {
+        String show_text;
+        mixed_neg_rate = (float) (neg_rate_local * 0.5 + neg_rate_online * 0.5);
+        mixed_pos_rate = (float) (pos_rate_local * 0.5 + pos_rate_online * 0.5);
+        if (mixed_pos_rate >= mixed_neg_rate) {
+            show_text = "融合后的识别结果为：Positive" + "\n识别准确率： " + mixed_pos_rate;
+        } else {
+            show_text = "融合后的识别结果为：Negative" + "\n识别准确率： " + mixed_neg_rate;
+        }
+        test_view.setText(show_text);
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
-        File dir=new File(getExternalFilesDir(null),"sounds");
-        if(!dir.exists()){
+        File dir = new File(getExternalFilesDir(null), "sounds");
+        if (!dir.exists()) {
             dir.mkdirs();
         }
-        mytv3_3=(TextView) findViewById(R.id.tv3_3);
-        PATHOF=dir.getPath();
+        mytv3_3 = (TextView) findViewById(R.id.tv3_3);
+        PATHOF = dir.getPath();
         mytv3_2 = findViewById(R.id.tv3_2);
         NetResult = findViewById(R.id.netResult);
         Bundle bundle = getIntent().getExtras();
-        mstring=bundle.getString("3");
-        timeStamp=bundle.getString("10");
-        test_view=(TextView) findViewById(R.id.test_view);
+        mstring = bundle.getString("3");
+        timeStamp = bundle.getString("10");
+        test_view = (TextView) findViewById(R.id.test_view);
 
         //读声音文件------------------------------------------------------------------------------------------------------------
         try {
-            wavFile=new RandomAccessFile(new File("/storage/emulated/0/Android/data/com.example.myapplication2/files/sounds/"+timeStamp+"test.wav"),"r");
+            wavFile = new RandomAccessFile(new File("/storage/emulated/0/Android/data/com.example.myapplication2/files/sounds/" + timeStamp + "test.wav"), "r");
             fileLength = wavFile.length();
             wavFile.seek(22);  //文件偏移22个位
             numChannels = wavFile.readShort();    //读取16位字节
@@ -175,8 +193,8 @@ public class resultActivity extends AppCompatActivity {
             }
             duration = numSamples * sampleRate;
             wavFile.close();
-        }catch (FileNotFoundException e) {
-            Log.e("WAVExplorer","Couldn't find file ");
+        } catch (FileNotFoundException e) {
+            Log.e("WAVExplorer", "Couldn't find file ");
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -185,8 +203,8 @@ public class resultActivity extends AppCompatActivity {
         //跳转
         //      Button mbtn3_1 = findViewById(R.id.bt3_1);
         Button mbtn3_2 = findViewById(R.id.bt3_2);
-        Button mbtn3_3= findViewById(R.id.bt3_3);
-        Query=(Button) findViewById(R.id.Query_Button);
+        Button mbtn3_3 = findViewById(R.id.bt3_3);
+        Query = (Button) findViewById(R.id.Query_Button);
         mbtn3_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,55 +217,57 @@ public class resultActivity extends AppCompatActivity {
 //         访问网络不能在主程序中进行，需要开新的线程
 //上传文件到服务器------------------------------------------------------------------------------------
         mbtn3_3.setOnClickListener(new View.OnClickListener() {
-            public JSONObject readJSONtext(String JSONtext){
+            public JSONObject readJSONtext(String JSONtext) {
                 String jsonString = "";
                 jsonString = JSONtext;
                 return JSONObject.parseObject(jsonString);
             }
+
             @Override
             public void onClick(View view) {
-                ProgressDialog progressDialog=new ProgressDialog(resultActivity.this);
+                ProgressDialog progressDialog = new ProgressDialog(resultActivity.this);
                 progressDialog.setMessage("Sending...");
                 progressDialog.setCancelable(true);
                 progressDialog.show();
-                new Thread(){
+                new Thread() {
                     @Override
                     public void run() {
                         //目标服务器IP 202.182.112.88
-                        File f = new File("/storage/emulated/0/Android/data/com.example.myapplication2/files/sounds/"+timeStamp+"test.wav");
+                        File f = new File("/storage/emulated/0/Android/data/com.example.myapplication2/files/sounds/" + timeStamp + "test.wav");
                         //创建RequestBody
                         //RequestBody fileBody=RequestBody.create(MediaType.parse("image/jpeg"),ImageFile);
-                        RequestBody fileBody=RequestBody.create(MediaType.parse("application/octet-stream"),f);
+                        RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), f);
                         //构建MultipartBody
-                        MultipartBody requestBody=new MultipartBody.Builder()
+                        MultipartBody requestBody = new MultipartBody.Builder()
                                 .setType(MultipartBody.FORM)
-                                .addFormDataPart("file",f.getName(),fileBody)
+                                .addFormDataPart("file", f.getName(), fileBody)
                                 .build();
                         //构建请求
-                        Request request=new Request.Builder()
-                                .url("http://202.182.112.88:10002/upload_files/"+userID)
+                        Request request = new Request.Builder()
+                                .url("http://202.182.112.88:10002/upload_files/" + userID)
                                 .post(requestBody)
                                 .build();
-                        try (Response response=client.newCall(request).execute()){
-                            if(!response.isSuccessful()) throw new IOException("Unexpected code: "+response);
+                        try (Response response = client.newCall(request).execute()) {
+                            if (!response.isSuccessful())
+                                throw new IOException("Unexpected code: " + response);
 
-                            if(response.isSuccessful()){
+                            if (response.isSuccessful()) {
                                 Log.d("State", "Succeed");
-                                stateOfMessage=1;
+                                stateOfMessage = 1;
                                 progressDialog.dismiss();
-                            }else{
+                            } else {
                                 Log.d("State", "Fail");
-                                stateOfMessage=0;
+                                stateOfMessage = 0;
                                 progressDialog.dismiss();
                             }
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     //成功或失败后的UI操作
-                                    if(stateOfMessage==1){
-                                        Toast.makeText(resultActivity.this,"发送成功", Toast.LENGTH_SHORT).show();
-                                    }else{
-                                        Toast.makeText(resultActivity.this,"发送失败", Toast.LENGTH_SHORT).show();
+                                    if (stateOfMessage == 1) {
+                                        Toast.makeText(resultActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(resultActivity.this, "发送失败", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -261,13 +281,13 @@ public class resultActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //查询函数
-                        OkHttpClient okHttpClient=new OkHttpClient();
-                        Request request=new Request.Builder()
-                                .url("http://202.182.112.88:10002/result/"+userID)
+                        OkHttpClient okHttpClient = new OkHttpClient();
+                        Request request = new Request.Builder()
+                                .url("http://202.182.112.88:10002/result/" + userID)
                                 .build();
                         //解析JSON数据
                         //String jsontext="{\"Result\":\"Positive\"}";需要的JSON数据格式
-                        ProgressDialog progressDialog1=new ProgressDialog(resultActivity.this);
+                        ProgressDialog progressDialog1 = new ProgressDialog(resultActivity.this);
                         progressDialog1.setMessage("查询中...");
                         progressDialog1.setCancelable(true);
                         progressDialog1.show();
@@ -275,21 +295,21 @@ public class resultActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 try {
-                                    Response response=okHttpClient.newCall(request).execute();
-                                    String jsontext=response.body().string();
+                                    Response response = okHttpClient.newCall(request).execute();
+                                    String jsontext = response.body().string();
                                     //String jsontext = "\"Res\":[{\"Restext\":\"negative\",\"Res_N\":0.999,\"Res_P\":0.001},\"Res\":[{\"Restext\":\"egative\",\"Res_N\":0.998,\"Res_P\":0.002}]";
                                     System.out.println(jsontext);
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
 
-                                            test_view.setText("Result:"+jsontext);
+                                            test_view.setText("Result:" + jsontext);
                                             progressDialog1.dismiss();
                                         }
                                     });
-                                    String regex="([0-9]+[.][0-9]+)";
-                                    Pattern pattern=Pattern.compile(regex);
-                                    Matcher matcher=pattern.matcher(jsontext);
+                                    String regex = "([0-9]+[.][0-9]+)";
+                                    Pattern pattern = Pattern.compile(regex);
+                                    Matcher matcher = pattern.matcher(jsontext);
                                     int i = 0;
                                     while (matcher.find()) {
                                         if (i % 2 == 0) {
@@ -310,7 +330,7 @@ public class resultActivity extends AppCompatActivity {
                                     throw new RuntimeException(e);
                                 }
                                 String resonline;
-                                if (pos_rate_online<neg_rate_online){
+                                if (pos_rate_online < neg_rate_online) {
                                     resonline = "negative";
                                     rate_online = neg_rate_online;
                                 } else {
@@ -325,6 +345,23 @@ public class resultActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    //25600
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("现在开始写onstart");
+    }
+
+    //加载文件
+    private MappedByteBuffer loadModelFile(String model) throws IOException {
+        AssetFileDescriptor fileDescriptor = getApplicationContext().getAssets().openFd(model + ".tflite");
+        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
+        FileChannel fileChannel = inputStream.getChannel();
+        long startOffset = fileDescriptor.getStartOffset();
+        long declaredLength = fileDescriptor.getDeclaredLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 
     @Override
@@ -345,79 +382,7 @@ public class resultActivity extends AppCompatActivity {
                 predict();
             }
         };
-        TimerHandler.postDelayed(myTimerRun,1000);
-    }
-    //25600
-    @Override
-    protected void onStart() {
-        super.onStart();
-        System.out.println("现在开始写onstart");
-    }
-
-    //加载文件
-    private MappedByteBuffer loadModelFile(String model) throws IOException {
-        AssetFileDescriptor fileDescriptor = getApplicationContext().getAssets().openFd(model + ".tflite");
-        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
-        FileChannel fileChannel = inputStream.getChannel();
-        long startOffset = fileDescriptor.getStartOffset();
-        long declaredLength = fileDescriptor.getDeclaredLength();
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
-    }
-
-    //预测
-    private void predict() {
-        try {
-            dwSoundlen=firstChannelArray.length;
-            AudPreEmphasize();
-            AunEnframe();
-            Hamming();
-            AudHamming();
-            AudSte();
-            AudEstimate();
-            AudioFile=new float[1][FRM_LEN];
-            for(int i=0;i<maxData.length;i++)
-            {
-                AudioFile[0][i]=(float) 1.0;
-            }
-            for(int i=0;i<maxData.length;i++)
-            {
-                AudioFile[0][i]=(float) maxData[i];
-            }
-
-            float[][] labelProbArray = new float[1][2];
-            long start = System.currentTimeMillis();
-
-            float[][][] newLabel=new float[1][1][2];
-            newLabel[0]=labelProbArray;
-            tflite.run(AudioFile, newLabel);//找到了
-
-            /*
-             * 这里就是模型的入口
-             *
-             * */
-            long end = System.currentTimeMillis();
-            long time = end - start;
-            float[] results = new float[labelProbArray[0].length];
-            System.arraycopy(labelProbArray[0], 0, results, 0, labelProbArray[0].length);
-            int r = get_max_result(results);
-            if (resultLabel.equals("positive")) {
-                resultlocal = "positive";
-                pos_rate_local = results[r];
-                neg_rate_local = 1-results[r];
-                rate_local = results[r];
-            } else {
-                resultlocal = "negative";
-                neg_rate_local = results[r];
-                pos_rate_local = 1-results[r];
-                rate_local = results[r];
-            }
-            System.out.println("negLocal is " + neg_rate_local);
-            mytv3_2.setText("识别结果：" + resultlocal + "\n识别准确率" + rate_local);
-            String show_distinct_text = "本地LeafGhostNet识别结果为：" + resultlocal + "\n识别准确率为：" + rate_local;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        TimerHandler.postDelayed(myTimerRun, 1000);
     }
 
     //获取最大值
@@ -463,6 +428,7 @@ public class resultActivity extends AppCompatActivity {
         }
 
     }
+
     public void AudPreEmphasize() {  // 音频预加重
         fpData = new double[firstChannelArray.length];  // 声明相同的长度
         fpData[0] = firstChannelArray[0];    // 第一个数不变
@@ -471,11 +437,67 @@ public class resultActivity extends AppCompatActivity {
         }
     }
 
+    //预测
+    private void predict() {
+        try {
+            dwSoundlen = firstChannelArray.length;
+            AudPreEmphasize();
+            AunEnframe();
+            Hamming();
+            AudHamming();
+            AudSte();
+            AudEstimate();
+            AudioFile = new float[1][FRM_LEN];
+            for (int i = 0; i < maxData.length; i++) {
+                AudioFile[0][i] = (float) 1.0;
+            }
+            for (int i = 0; i < maxData.length; i++) {
+                AudioFile[0][i] = (float) maxData[i];
+            }
+
+            float[][] labelProbArray = new float[1][2];
+            long start = System.currentTimeMillis();
+
+            float[][][] newLabel = new float[1][1][2];
+            newLabel[0] = labelProbArray;
+            tflite.run(AudioFile, newLabel);//找到了
+
+            /*
+             * 这里就是模型的入口
+             *
+             * */
+            long end = System.currentTimeMillis();
+            long time = end - start;
+            float[] results = new float[labelProbArray[0].length];
+            System.arraycopy(labelProbArray[0], 0, results, 0, labelProbArray[0].length);
+            int r = get_max_result(results);
+            System.out.println("====================================================================!!!@@@@" + results[r]);
+            System.out.println(results[r]);
+            System.out.println("====================================================================!!!@@@@");
+            if (resultLabel.equals("positive")) {
+                resultlocal = "positive";
+                pos_rate_local = results[r];
+                neg_rate_local = 1 - results[r];
+                rate_local = results[r];
+            } else {
+                resultlocal = "negative";
+                neg_rate_local = results[r];
+                pos_rate_local = 1 - results[r];
+                rate_local = results[r];
+            }
+            System.out.println("negLocal is " + neg_rate_local);
+            mytv3_2.setText("识别结果：" + resultlocal + "\n识别准确率" + rate_local);
+            String show_distinct_text = "本地LeafGhostNet识别结果为：" + resultlocal + "\n识别准确率为：" + rate_local;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void AunEnframe() {//分帧
-        FrmNum = (fpData.length-FRM_LEN+FRM_SFT) / FRM_SFT;  // 帧数=（数据长度-帧长+窗移）/窗移
+        FrmNum = (fpData.length - FRM_LEN + FRM_SFT) / FRM_SFT;  // 帧数=（数据长度-帧长+窗移）/窗移
         audFrame = new AudFrame[FrmNum];  // 音频帧列表，新建函数列表
-        for(int i=0;i<FrmNum;i++){
+        for (int i = 0; i < FrmNum; i++) {
             audFrame[i] = new AudFrame();  // 列表，放入audframe参数
         }
         int x = 0;//
@@ -485,16 +507,8 @@ public class resultActivity extends AppCompatActivity {
             for (int j = 0; j < FRM_LEN; j++) {
                 audFrame[i].fltFrame[j] = fpData[x + j];
             }
-            x+=FRM_SFT;
+            x += FRM_SFT;
             System.out.println("分帧执行完成");
-        }
-    }
-
-
-    public void Hamming() {
-        fltHamm = new double[FRM_LEN];
-        for (int i = 0; i < FRM_LEN; i++) {
-            fltHamm[i] = (0.54 - 0.46*Math.cos((2*i*PI1) / (FRM_LEN-1)));  // 加窗
         }
     }
 
@@ -508,31 +522,22 @@ public class resultActivity extends AppCompatActivity {
         System.out.println("加窗执行完成");
     }
 
-
+    public void Hamming() {
+        fltHamm = new double[FRM_LEN];
+        for (int i = 0; i < FRM_LEN; i++) {
+            fltHamm[i] = (0.54 - 0.46 * Math.cos((2 * i * PI1) / (FRM_LEN - 1)));  // 加窗
+        }
+    }
 
     public void AudSte() {//计算每帧能量
         for (int i = 0; i < FrmNum; i++) {  // 遍历帧数
             double fltShortEnergy = 0.0;
             for (int j = 0; j < FRM_LEN; j++) {
-                fltShortEnergy += Math.pow(audFrame[i].fltFrame[j],2);
+                fltShortEnergy += Math.pow(audFrame[i].fltFrame[j], 2);
             }
             audFrame[i].fltSte = fltShortEnergy;  // 每一帧总能值
         }
         System.out.println("计算每帧能量执行完成");
-    }
-
-
-
-    public void AudEstimate(){
-        maxSte = 0.0;  // 最大能量值
-        maxData=new double[FRM_LEN];
-        for(int i = 0; i < FrmNum; i++)  {
-            if(maxSte<audFrame[i].fltSte) {
-                maxSte = audFrame[i].fltSte;
-                System.arraycopy(audFrame[i].fltFrame, 0, maxData, 0, FRM_LEN);
-            }
-        }
-        System.out.println("能量估计执行完成");
     }
 
 
@@ -541,20 +546,21 @@ public class resultActivity extends AppCompatActivity {
     public float get_neg_rate_local() {
         return resultActivity.neg_rate_local;
     }
+
     public float get_pos_rate_local() {
         return resultActivity.pos_rate_local;
     }
 
-    public static void showTextRes(){
-        String show_text;
-        mixed_neg_rate = (float) (neg_rate_local * 0.5 + neg_rate_online * 0.5);
-        mixed_pos_rate = (float) (pos_rate_local * 0.5 + pos_rate_online * 0.5);
-        if(mixed_pos_rate>=mixed_neg_rate){
-            show_text = "融合后的识别结果为：Positive" + "\n识别准确率： " + mixed_pos_rate ;
-        } else {
-            show_text = "融合后的识别结果为：Negative" + "\n识别准确率： " + mixed_neg_rate ;
+    public void AudEstimate() {
+        maxSte = 0.0;  // 最大能量值
+        maxData = new double[FRM_LEN];
+        for (int i = 0; i < FrmNum; i++) {
+            if (maxSte < audFrame[i].fltSte) {
+                maxSte = audFrame[i].fltSte;
+                System.arraycopy(audFrame[i].fltFrame, 0, maxData, 0, FRM_LEN);
+            }
         }
-        test_view.setText(show_text);
+        System.out.println("能量估计执行完成");
     }
     // 结果融合
 }

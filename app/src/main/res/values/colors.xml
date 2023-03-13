@@ -16,6 +16,7 @@
     <color name="type_bkgnd_notification">#88666600</color>
     <color name="type_bkgnd_music">#88000000</color>
     <color name="type_bkgnd_unsupported">#88cccccc</color>
-
+    <color name="theme_back">#ffffffff</color>
     <color name="Dark_Orchid">#9c27b0</color>
+    <color name="button_color">#00BCD4</color>
 </resources>
