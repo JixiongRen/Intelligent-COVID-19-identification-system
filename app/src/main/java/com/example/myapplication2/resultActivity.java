@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.alibaba.fastjson.JSONObject;
-
+import org.json.JSONObject;
 import org.tensorflow.lite.Interpreter;
 
 import java.io.BufferedReader;
@@ -86,6 +86,7 @@ public class resultActivity extends AppCompatActivity {
     private static TextView mytv3_3;
     private static TextView test_view;
     private TextView NetResult;
+    private ImageView result_img;
     private Interpreter tflite = null;
     private int[] ddims = {1, 3, 224, 224};//-------------------
     private List<String> resultLabel = new ArrayList<>();
@@ -131,9 +132,10 @@ public class resultActivity extends AppCompatActivity {
             dir.mkdirs();
         }
         mytv3_3 = (TextView) findViewById(R.id.tv3_3);
+        result_img=(ImageView)findViewById(R.id.result_img);
         PATHOF = dir.getPath();
         mytv3_2 = findViewById(R.id.tv3_2);
-        NetResult = findViewById(R.id.netResult);
+        //NetResult = findViewById(R.id.netResult);
         Bundle bundle = getIntent().getExtras();
         mstring = bundle.getString("3");
         timeStamp = bundle.getString("10");
@@ -217,11 +219,11 @@ public class resultActivity extends AppCompatActivity {
 //         访问网络不能在主程序中进行，需要开新的线程
 //上传文件到服务器------------------------------------------------------------------------------------
         mbtn3_3.setOnClickListener(new View.OnClickListener() {
-            public JSONObject readJSONtext(String JSONtext) {
-                String jsonString = "";
-                jsonString = JSONtext;
-                return JSONObject.parseObject(jsonString);
-            }
+//            public JSONObject readJSONtext(String JSONtext) {
+//                String jsonString = "";
+//                jsonString = JSONtext;
+//                return JSONObject.parseObject(jsonString);
+//            }
 
             @Override
             public void onClick(View view) {
@@ -288,7 +290,7 @@ public class resultActivity extends AppCompatActivity {
                         //解析JSON数据
                         //String jsontext="{\"Result\":\"Positive\"}";需要的JSON数据格式
                         ProgressDialog progressDialog1 = new ProgressDialog(resultActivity.this);
-                        progressDialog1.setMessage("查询中...");
+                        progressDialog1.setMessage("Query...");
                         progressDialog1.setCancelable(true);
                         progressDialog1.show();
                         new Thread(new Runnable() {
@@ -332,9 +334,11 @@ public class resultActivity extends AppCompatActivity {
                                 String resonline;
                                 if (pos_rate_online < neg_rate_online) {
                                     resonline = "negative";
+                                    result_img.setImageResource(R.drawable.good_result);
                                     rate_online = neg_rate_online;
                                 } else {
                                     resonline = "positive";
+                                    result_img.setImageResource(R.drawable.bad_result);
                                     rate_online = pos_rate_online;
                                 }
                                 String Str_online = "识别结果：" + resonline + "\n识别准确率：" + rate_online;
@@ -460,7 +464,7 @@ public class resultActivity extends AppCompatActivity {
 
             float[][][] newLabel = new float[1][1][2];
             newLabel[0] = labelProbArray;
-            tflite.run(AudioFile, newLabel);//找到了
+            tflite.run(AudioFile, newLabel);//模型入口
 
             /*
              * 这里就是模型的入口
