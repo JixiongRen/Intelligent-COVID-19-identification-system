@@ -175,214 +175,117 @@ public class SplitActivity extends AppCompatActivity {
             System.out.println("已取得权限");
     }
 
+    // 第二个按钮的跳转
+    Button mbtn2_2 = findViewById(R.id.bt2_2);
+    mbtn2_2.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            @SuppressLint("ResourceType") Animation animation = AnimationUtils.loadAnimation(SplitActivity.this,R.drawable.pusheffect);
+            mbtn2_2.setAnimation(animation);
+            chronometer.stop();//停止计时
+            isRecording=false;
+            mbtn2_2.setEnabled(false);
+            String pattern = "yyyy-MM-dd-HH-mm-ss";
+            Long timestamp = System.currentTimeMillis();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+             timeStamp = simpleDateFormat.format(new Date(timestamp));
+            System.out.println("This is time : " + timeStamp);
+            String wavFileName = "/" + timeStamp + "test.wav";
+            // 为保存时戳的txt文件命名并创建路径
+            File dir_time=new File(getExternalFilesDir(null),"TimeStamp");
+            if(!dir_time.exists()){
+                dir_time.mkdirs();
+            }
+            String dirPath_time = dir.getPath();
+            File TimeStampFile = new File(dirPath_time+"/" + "TimeStamps.txt");
+            if (TimeStampFile.exists()){
+                TimeStampFile.delete();
+            }
+            try {
+                TimeStampFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-
-
-//        Button mbtn2_1 = findViewById(R.id.bt2_1);
-//        mbtn2_1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//
-//
-//            }
-//        });
-
-
-
-
-        // 第一个按钮的跳转
-//        Button mbtn2_1 = findViewById(R.id.bt2_1);
-//        mbtn2_1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // 播放
-//                if (mPlayer == null)
-//                    return;
-//                if (mPlayer.isPlaying()) {
-//                    mPlayer.pause();
-//                    updateTime.removeMessages(UPDATE_WAV);
-//                }
-//                //显示波形图和fft图
-//                int mPlayStartMsec = waveView.pixelsToMillisecs(0);
-//                mPlayEndMsec = waveView.pixelsToMillisecsTotal();
-//                mPlayer.setOnCompletionListener(new SamplePlayer.OnCompletionListener() {
-//                    @Override
-//                    public void onCompletion() {
-//                        waveView.setPlayback(-1);
-//                        updateDisplay();
-//                        updateTime.removeMessages(UPDATE_WAV);
-//                        Toast.makeText(getApplicationContext(),"播放完成",Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//                mPlayer.seekTo(mPlayStartMsec);
-//                mPlayer.start();
-//                Message msg = new Message();
-//                msg.what = UPDATE_WAV;
-//                updateTime.sendMessage(msg);
-//            }
-//        });//第一个按钮的功能还得看第二个按钮
-
-
-        // 第二个按钮的跳转
-        Button mbtn2_2 = findViewById(R.id.bt2_2);
-        mbtn2_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                @SuppressLint("ResourceType") Animation animation = AnimationUtils.loadAnimation(SplitActivity.this,R.drawable.pusheffect);
-                mbtn2_2.setAnimation(animation);
-                chronometer.stop();//停止计时
-                isRecording=false;
-                mbtn2_2.setEnabled(false);
-                String pattern = "yyyy-MM-dd-HH-mm-ss";
-                Long timestamp = System.currentTimeMillis();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-                 timeStamp = simpleDateFormat.format(new Date(timestamp));
-                System.out.println("This is time : " + timeStamp);
-                String wavFileName = "/" + timeStamp + "test.wav";
-                // 为保存时戳的txt文件命名并创建路径
-                File dir_time=new File(getExternalFilesDir(null),"TimeStamp");
-                if(!dir_time.exists()){
-                    dir_time.mkdirs();
-                }
-                String dirPath_time = dir.getPath();
-                File TimeStampFile = new File(dirPath_time+"/" + "TimeStamps.txt");
-                if (TimeStampFile.exists()){
-                    TimeStampFile.delete();
-                }
-                try {
-                    TimeStampFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    RandomAccessFile tsfoif = new RandomAccessFile(TimeStampFile,"rwd");
-                    tsfoif.seek(TimeStampFile.length());
-                    tsfoif.write(timeStamp.getBytes());
-                    tsfoif.close();
-                } catch(IOException e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-                PCMCovWavUtil x=new PCMCovWavUtil(FREQUENCY,CHANNELCONGIFIGURATION,AUDIOENCODING,bufferSize,PATHOF+"/test.pcm",PATHOF+wavFileName,PATHOF);
-                x.convertWaveFile();//这里转码有问题
-                try {
-                    waveCanvas.Stop();
-                } catch (IllegalStateException e) {
-                    System.out.println("异常出现");
-                }
-                waveCanvas = null;
-                Toast.makeText(SplitActivity.this, "Recording stopped", Toast.LENGTH_SHORT).show();
-                // 载入wav文件显示波形
-                try {
-                    Thread.sleep(300);//让文件写入完成后再载入波形 适当的休眠下
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                assert string != null;
-                mFile = new File(string);    //test.wav文件
-                mLoadingKeepGoing = true;
-                // Load the sound file in a background thread  在后台线程中加载声音文件
-                mLoadSoundFileThread = new Thread() {
-                    public void run() {
-                        try {
-                             mSoundFile = SoundFile.create(mFile.getAbsolutePath(),null);
-                            if (mSoundFile == null) {
-                                return;
-                            }
-                            mPlayer = new SamplePlayer(mSoundFile);
-                        } catch (final Exception e) {
-                            e.printStackTrace();
+            try {
+                RandomAccessFile tsfoif = new RandomAccessFile(TimeStampFile,"rwd");
+                tsfoif.seek(TimeStampFile.length());
+                tsfoif.write(timeStamp.getBytes());
+                tsfoif.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+            PCMCovWavUtil x=new PCMCovWavUtil(FREQUENCY,CHANNELCONGIFIGURATION,AUDIOENCODING,bufferSize,PATHOF+"/test.pcm",PATHOF+wavFileName,PATHOF);
+            x.convertWaveFile();//这里转码有问题
+            try {
+                waveCanvas.Stop();
+            } catch (IllegalStateException e) {
+                System.out.println("异常出现");
+            }
+            waveCanvas = null;
+            Toast.makeText(SplitActivity.this, "Recording stopped", Toast.LENGTH_SHORT).show();
+            // 载入wav文件显示波形
+            try {
+                Thread.sleep(300);//让文件写入完成后再载入波形 适当的休眠下
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            assert string != null;
+            mFile = new File(string);    //test.wav文件
+            mLoadingKeepGoing = true;
+            // Load the sound file in a background thread  在后台线程中加载声音文件
+            mLoadSoundFileThread = new Thread() {
+                public void run() {
+                    try {
+                         mSoundFile = SoundFile.create(mFile.getAbsolutePath(),null);
+                        if (mSoundFile == null) {
                             return;
                         }
-                        if (mLoadingKeepGoing) {
-                            Runnable runnable = new Runnable() {
-                                public void run() {
-                                    //waveview载入波形完成
-                                    waveView.setSoundFile(mSoundFile);
-                                    DisplayMetrics metrics = new DisplayMetrics();
-                                    getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                                    mDensity = metrics.density;
-                                    waveView.recomputeHeights(mDensity);
-
-                                    waveSfv.setVisibility(View.INVISIBLE);
-                                    waveView.setVisibility(View.VISIBLE);
-                                }
-                            };
-                            SplitActivity.this.runOnUiThread(runnable);
-                        }
+                        mPlayer = new SamplePlayer(mSoundFile);
+                    } catch (final Exception e) {
+                        e.printStackTrace();
+                        return;
                     }
-                };
-                mLoadSoundFileThread.start();
+                    if (mLoadingKeepGoing) {
+                        Runnable runnable = new Runnable() {
+                            public void run() {
+                                //waveview载入波形完成
+                                waveView.setSoundFile(mSoundFile);
+                                DisplayMetrics metrics = new DisplayMetrics();
+                                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                                mDensity = metrics.density;
+                                waveView.recomputeHeights(mDensity);
 
+                                waveSfv.setVisibility(View.INVISIBLE);
+                                waveView.setVisibility(View.VISIBLE);
+                            }
+                        };
+                        SplitActivity.this.runOnUiThread(runnable);
+                    }
+                }
+            };
+            mLoadSoundFileThread.start();
+            bundle.putString("3",PATHOF+"/test.wav");
+        }
+    });
 
+    // 第三个按钮的跳转
+    Button mbtn2_3 = findViewById(R.id.bt2_3);
+    mbtn2_3.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            // 跳转到结果界面
+            Intent intent = new Intent(SplitActivity.this, resultActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("10",timeStamp);
+            intent.putExtras(bundle);
+            chronometer.stop();//停止计时
+            intent.putExtras(bundle);
+            startActivity(intent);
 
-
-                bundle.putString("3",PATHOF+"/test.wav");//1111111111111111111111
-            }
-        });
-
-        // 第三个按钮的跳转
-        Button mbtn2_3 = findViewById(R.id.bt2_3);
-        mbtn2_3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 跳转到结果界面
-                Intent intent = new Intent(SplitActivity.this, resultActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("10",timeStamp);
-//               bundle.putString("1", String.valueOf(AudioTime));
-                intent.putExtras(bundle);
-                chronometer.stop();//停止计时
-//                if (waveCanvas != null){
-//                    waveCanvas.Stop();
-//                    waveCanvas = null;
-//                }
-
-
-
-//                int readlen;
-//                    String scrWav=PATHOF+"/test.wav";
-//                Socket socket= null;
-//                try {
-//                    socket = new Socket();
-//                    socket.setSoTimeout(3000);
-//                    socket.connect(new InetSocketAddress("202.182.112.88",2000),3000);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }finally {
-//                    System.out.println("连接失败！");
-//                }
-//
-//                System.out.print("客户端IP："+socket.getLocalAddress());
-//                System.out.println("  客户端端口："+socket.getLocalPort());
-//                System.out.print("服务器IP："+socket.getInetAddress());
-//                System.out.println("  服务器端口："+socket.getPort());
-//
-//                try {
-//                    FileInputStream fileInputStream=new FileInputStream(scrWav);
-//                    OutputStream outputStream=socket.getOutputStream();
-//                    byte[] bytes=new byte[1024];
-//                    while ((readlen=fileInputStream.read(bytes))!=-1){
-//                        outputStream.write(bytes,0,readlen);
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                System.out.println("本地文件已传输完成");
-                intent.putExtras(bundle);
-                startActivity(intent);
-
-            }
-        });
+        }
+    });
     }
-
-
-
 
     //要求权限
     private void requestPermission() {
@@ -420,10 +323,7 @@ public class SplitActivity extends AppCompatActivity {
         int result2=ContextCompat.checkSelfPermission(getApplicationContext(),READ_EXTERNAL_STORAGE);
         return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED && result2==PackageManager.PERMISSION_GRANTED;
     }
-
    //间隔不断的输入，非一次性写入
-
-
 }
 
 

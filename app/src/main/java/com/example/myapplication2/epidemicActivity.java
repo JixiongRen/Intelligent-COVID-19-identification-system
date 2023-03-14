@@ -90,8 +90,7 @@ public class epidemicActivity extends AppCompatActivity {
                                     {"拉萨市"},
                                     {"乌鲁木齐市","克拉玛依市","吐鲁番市","哈密市"},
                                     {"昆明市","曲靖市","昭通市","玉溪市","楚雄州市","红河州市","文山州市","普洱市","版纳州市","大理州市","保山市","德宏州市","丽江市","怒江州市","迪庆州市","临沧市"},
-                                    {"杭州市","宁波市","温州市","绍兴市","湖州市","嘉兴市","金华市","衢州市","台州市","丽水市","舟山市"},
-
+                                    {"杭州市","宁波市","温州市","绍兴市","湖州市","嘉兴市","金华市","衢州市","台州市","丽水市","舟山市"}
     };
 
     @Override
@@ -109,7 +108,6 @@ public class epidemicActivity extends AppCompatActivity {
         zhiyu=(TextView)findViewById(R.id.zhiyu);
         DataTime=(TextView)findViewById(R.id.DataTime);
         sheninitSpinner();
-
         area=shen+" "+shi+" "+qu;
         button=(Button) findViewById(R.id.yiqing);
         button.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +139,6 @@ public class epidemicActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         button3=(Button) findViewById(R.id.realschool);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,9 +147,7 @@ public class epidemicActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
-
     private void sheninitSpinner() {
         ArrayAdapter<String> starAdapter = new ArrayAdapter<String>(this,R.layout.item_select,shenArray);
         //设置数组适配器的布局样式
@@ -175,13 +170,9 @@ public class epidemicActivity extends AppCompatActivity {
                 shiArray=shiArray1[i];
                 shiinitSpinner();
                 System.out.println();
-
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
     }
 
@@ -205,25 +196,17 @@ public class epidemicActivity extends AppCompatActivity {
                 area=shen+" "+shi+" "+qu;
                 //quinitSpinner();
                 textView.setText("地区："+area);
-
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
     }
-
-
         private  void StartMain(String path,String key) {
             // 源文件对象
             File sourceFile = new File(path+"/China_data.csv");
             // 待搜索地区名称数组
             String[] keys = {key};
-
             List<List<String>> listResult = FileDatasExtracter.extractDataListFromFile(sourceFile,keys);
-
             for (List<String> oneLineData:listResult) {
                 System.out.println(oneLineData);
                 String[] strs = oneLineData.toArray(new String[]{});
@@ -233,13 +216,11 @@ public class epidemicActivity extends AppCompatActivity {
                 DataTime1=strs[4];
                 System.out.println(strs[0]);
             }
-
         }
-
         public class Download extends Thread {
             @Override
             public void run() {
-//从服务器处获取更新数据
+            //从服务器处获取更新数据
                 int readlen;
                 boolean success;
                 String targetPath=PATHOF+"/China_data.csv";
@@ -258,45 +239,10 @@ public class epidemicActivity extends AppCompatActivity {
                     fos.close();
                     System.out.println("下载完成");
                     Log.e(TAG,"下载完成");
-
                 } catch (IOException e) {
                     e.printStackTrace();
-
                     success=false;
                 }
-
             }
-
         }
-
-
-//    private void quinitSpinner() {
-//        ArrayAdapter<String> starAdapter = new ArrayAdapter<String>(this,R.layout.item_select,shenArray);
-//        //设置数组适配器的布局样式
-//        starAdapter.setDropDownViewResource(R.layout.item_dropdown);
-//        //从布局文件中获取名叫sp_dialog的下拉框
-//        Spinner sp = findViewById(R.id.qu);
-//        //设置下拉框的标题，不设置就没有难看的标题了
-//        sp.setPrompt("请选择省份");
-//        //设置下拉框的数组适配器
-//        sp.setAdapter(starAdapter);
-//        //设置下拉框默认的显示第一项
-//        sp.setSelection(0);
-//        //给下拉框设置选择监听器，一旦用户选中某一项，就触发监听器的onItemSelected方法
-//        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                qu=shenArray[i];
-//                area=shen+" "+shi+" "+qu;
-//                textView.setText("地区："+area);
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//    }
-
 }
