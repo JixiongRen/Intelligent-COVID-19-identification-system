@@ -12,6 +12,7 @@
         android:layout_height="300dp"/>
 
     <com.example.myapplication2.Wave.WaveformView
+        android:background="@drawable/shape_corners"
         android:id="@+id/waveview"
         android:layout_width="fill_parent"
         android:layout_height="300dp"
@@ -48,29 +49,37 @@
 
         <Button
             android:id="@+id/bt2_2"
-            android:layout_width="142dp"
-            android:layout_height="142dp"
+            android:layout_width="160dp"
+            android:layout_height="50dp"
             android:layout_alignParentEnd="true"
-
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="20dp"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="154dp"
-            android:layout_marginBottom="91dp"
+            android:layout_marginEnd="121dp"
+            android:layout_marginBottom="181dp"
             android:layout_weight="1"
-            android:background="@drawable/ic___stop" />
+            android:background="@drawable/shape_bt_conners"
+            android:gravity="center"
+            android:text="暂停"
+            android:textColor="@color/timecode"
+            android:textSize="25dp" />
 
         <Button
             android:id="@+id/bt2_3"
-            android:layout_width="77dp"
-            android:layout_height="75dp"
-            android:layout_alignEnd="@+id/bt2_2"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="160dp"
-            android:layout_marginEnd="-100dp"
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="120dp"
+            android:layout_marginBottom="97dp"
             android:layout_weight="1"
-            android:background="@drawable/ic_nlsasrbag________" />
+            android:background="@drawable/shape_bt_conners"
+            android:gravity="center"
+            android:text="识别"
+            android:textColor="@color/timecode"
+            android:textSize="25dp" />
 
     </RelativeLayout>
 </RelativeLayout>

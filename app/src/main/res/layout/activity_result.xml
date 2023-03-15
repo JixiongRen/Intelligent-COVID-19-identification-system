@@ -3,70 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EBEBEB"
+    android:background="#EFF4F5"
     android:orientation="vertical">
 
-<ImageView
-    android:id="@+id/result_img"
-    android:layout_toRightOf="@+id/test_view"
-    android:layout_width="24dp"
-    android:layout_height="24dp"
-    android:layout_marginTop="42dp"
-    android:layout_marginLeft="5dp"/>
-
-    <TextView
-        android:id="@+id/tv3_"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+    <ImageView
+        android:id="@+id/result_img"
+        android:layout_width="280dp"
+        android:layout_height="294dp"
+        android:layout_below="@+id/test_view"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="499dp"
-        android:background="#ffffff" />
-
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="254dp"
-        android:text="本地识别结果"
-        android:textSize="15sp" />
-
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="220dp"
-        android:layout_marginTop="253dp"
-        android:text="服务器识别结果"
-        android:textSize="15sp" />
+        android:layout_marginLeft="-49dp"
+        android:background="@drawable/shape_corners"
+        android:layout_marginTop="31dp" />
 
     <TextView
         android:id="@+id/test_view"
-        android:layout_width="wrap_content"
+        android:layout_width="262dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="41dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/shape_corners"
+        android:gravity="center"
         android:text="融合后识别结果"
         android:textSize="20sp" />
 
     <TextView
+        android:gravity="center"
         android:id="@+id/tv3_2"
         android:layout_width="wrap_content"
-        android:layout_height="212dp"
-
+        android:layout_height="60dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
@@ -77,13 +45,14 @@
         android:layout_marginEnd="210dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="214dp"
-        android:background="#ffffff" />
+        android:background="@drawable/shape_corners" />
 
     <TextView
+        android:gravity="center"
         android:id="@+id/tv3_3"
         android:layout_width="wrap_content"
-        android:layout_height="212dp"
-
+        android:layout_height="60dp"
+        android:background="@drawable/shape_corners"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
@@ -93,10 +62,11 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="213dp"
-        android:background="#ffffff" />
+        android:layout_marginBottom="213dp"/>
+<!--        android:background="#ffffff" />-->
 
     <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -125,14 +95,15 @@
 
         <Button
             android:id="@+id/bt3_2"
+            android:background="@drawable/shape_bt_conners"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="295dp"
+            android:layout_marginTop="62dp"
+            android:layout_marginEnd="292dp"
             android:layout_weight="1"
-            android:background="@color/button_color"
+
             android:foreground="?android:selectableItemBackground"
             android:text="重新识别"
             android:textColor="@color/timecode"
@@ -145,10 +116,10 @@
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="169dp"
+            android:layout_marginTop="61dp"
+            android:layout_marginEnd="159dp"
             android:layout_weight="1"
-            android:background="@color/button_color"
+            android:background="@drawable/shape_bt_conners"
             android:foreground="?android:selectableItemBackground"
             android:text="上传音频"
             android:textColor="@color/timecode"
@@ -161,10 +132,10 @@
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="42dp"
+            android:layout_marginTop="62dp"
+            android:layout_marginEnd="32dp"
             android:layout_weight="1"
-            android:background="@color/button_color"
+            android:background="@drawable/shape_bt_conners"
             android:foreground="?android:selectableItemBackground"
             android:text="查询结果"
             android:textColor="@color/timecode"

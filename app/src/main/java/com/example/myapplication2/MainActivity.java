@@ -211,9 +211,10 @@ public class MainActivity extends AppCompatActivity {
         mLooperPagerAdapter = new com.example.myapplication2.LooperPagerAdapter();
         mLooperPagerAdapter.setData(sPics);
         mLoopPager.setAdapter(mLooperPagerAdapter);
+//        mPointContainer = (LinearLayout) this.findViewById(R.id.ponits_container);
         mPointContainer = (LinearLayout) this.findViewById(R.id.ponits_container);
         //根据图片数量添加点的个数
-        insertPoint();
+//        insertPoint();
         mLoopPager.setCurrentItem(mLooperPagerAdapter.getDataRealSize() * 100, false);
     }
 

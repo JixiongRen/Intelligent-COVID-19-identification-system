@@ -34,6 +34,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -110,16 +111,37 @@ public class resultActivity extends AppCompatActivity {
     private String timeStamp;
     String result1 = "上传：成功";
 
-    public static void showTextRes() {
+    public void showTextRes() {
         String show_text;
         mixed_neg_rate = (float) (neg_rate_local * 0.5 + neg_rate_online * 0.5);
         mixed_pos_rate = (float) (pos_rate_local * 0.5 + pos_rate_online * 0.5);
         if (mixed_pos_rate >= mixed_neg_rate) {
-            show_text = "融合后的识别结果为：Positive" + "\n识别准确率： " + mixed_pos_rate;
-        } else {
-            show_text = "融合后的识别结果为：Negative" + "\n识别准确率： " + mixed_neg_rate;
+//            show_text = "融合后的识别结果为：Positive" + "\n识别准确率： " + mixed_pos_rate;
+            show_text = "融合后的识别结果  阳性";
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    result_img.setImageResource(R.drawable.bad_result);
+                }
+            });
+        } else{
+            //            show_text = "融合后的识别结果为：Negative" + "\n识别准确率： " + mixed_neg_rate;
+
+            show_text = "融合后的识别结果  阴性";
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    result_img.setImageResource(R.drawable.good_result);
+                }
+            });
         }
-        test_view.setText(show_text);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                test_view.setText(show_text);
+            }
+        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -334,15 +356,27 @@ public class resultActivity extends AppCompatActivity {
                                 String resonline;
                                 if (pos_rate_online < neg_rate_online) {
                                     resonline = "negative";
-                                    result_img.setImageResource(R.drawable.good_result);
                                     rate_online = neg_rate_online;
                                 } else {
                                     resonline = "positive";
-                                    result_img.setImageResource(R.drawable.bad_result);
+
                                     rate_online = pos_rate_online;
                                 }
-                                String Str_online = "识别结果：" + resonline + "\n识别准确率：" + rate_online;
-                                mytv3_3.setText(Str_online);
+//                                String Str_online = "云端识别结果：" + resonline + "\n识别准确率：" + rate_online;
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String Str_online = "";
+                                        if (resonline.equals("negative")){
+                                            Str_online = "云端识别结果  阴性";
+                                        } else {
+                                            Str_online = "云端识别结果  阳性";
+                                        }
+
+                                        mytv3_3.setText(Str_online);
+                                    }
+                                });
                             }
                         }).start();
                     }
@@ -490,8 +524,19 @@ public class resultActivity extends AppCompatActivity {
                 rate_local = results[r];
             }
             System.out.println("negLocal is " + neg_rate_local);
-            mytv3_2.setText("识别结果：" + resultlocal + "\n识别准确率" + rate_local);
-            String show_distinct_text = "本地LeafGhostNet识别结果为：" + resultlocal + "\n识别准确率为：" + rate_local;
+//            mytv3_2.setText("识别结果：" + resultlocal + "\n识别准确率" + rate_local);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (Objects.equals(resultlocal, "negative")){
+                        mytv3_2.setText("本地识别结果  阴性");
+                    } else {
+                        mytv3_2.setText("本地识别结果  阳性");
+                    }
+                }
+            });
+
+            String show_distinct_text = "本地识别结果为" + resultlocal + "\n识别准确率为：" + rate_local;
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EFF4F5"
+
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="569dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/shape_corners"
+        android:backgroundTint="#EFF4F5">
+
+        <com.example.myapplication2.MyViewPager
+            android:id="@+id/looper_pager"
+            android:layout_width="350dp"
+            android:layout_height="480dp"
+            android:layout_centerHorizontal="true"
+            android:background="#EFF4F5" />
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/ponits_container"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_marginBottom="40px"-->
+        <!--            android:gravity="center_horizontal"-->
+        <!--            android:orientation="horizontal">-->
+
+        <!--        </LinearLayout>-->
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:layout_margin="0dp"
+        android:background="#ffffff"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/quanxian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center"
+        android:background="#ccffff"
+        android:onClick="requestPermission"
+        android:text="权限申请"
+        android:visibility="visible" />
+
+</LinearLayout>

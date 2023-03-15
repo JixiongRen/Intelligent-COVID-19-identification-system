@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EBEBEB"
+    android:background="#EFF4F5"
     android:baselineAligned="false"
     android:orientation="vertical">
 
@@ -16,17 +16,17 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="592dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/shape_corners"
-        android:backgroundTint="@color/theme_back">
+        android:backgroundTint="#EFF4F5">
 
         <com.example.myapplication2.MyViewPager
             android:id="@+id/looper_pager"
-            android:layout_width="350dp"
-            android:layout_height="480dp"
+            android:layout_width="358dp"
+            android:layout_height="516dp"
             android:layout_centerHorizontal="true"
-            android:background="@color/theme_back" />
+            android:background="#EFF4F5" />
 
         <LinearLayout
             android:id="@+id/ponits_container"
@@ -60,71 +60,78 @@
         android:background="#ffffff"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:background="@color/theme_back"
-        android:orientation="vertical">
+    <Button
+        android:id="@+id/quanxian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="157dp"
+        android:layout_marginBottom="10dp"
+        android:background="#ccffff"
+        android:onClick="requestPermission"
+        android:text="权限申请"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/chaxun"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginBottom="84dp"
+        android:layout_toStartOf="@+id/quanxian"
+        android:background="#ccffff"
+        android:text="疫情动态"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/position_text_view"
+        android:layout_width="396dp"
+        android:layout_height="47dp"
+        android:layout_below="@id/quanxian"
+        android:text="233"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/bt1_1"
+        android:layout_width="160dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/shape_bt_conners"
+        android:foreground="?android:selectableItemBackground"
+        android:gravity="center"
+        android:src="@drawable/kaishiluyin1"
+        android:text="开始录音"
+        android:textColor="@color/timecode"
+        android:textSize="35dp"
+        android:theme="@style/RippleWhite" />
+
+    <!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="center_vertical"-->
+<!--        android:background="#EFF4F5"-->
+<!--        android:orientation="vertical">-->
 
 
-        <!--        <RelativeLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="65dp">-->
+<!--        &lt;!&ndash;        <RelativeLayout&ndash;&gt;-->
+<!--        &lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--        &lt;!&ndash;            android:layout_height="65dp">&ndash;&gt;-->
 
-        <Button
-            android:id="@+id/quanxian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="157dp"
-            android:layout_marginBottom="10dp"
-            android:background="#ccffff"
-            android:onClick="requestPermission"
-            android:text="权限申请"
-            android:visibility="gone" />
+<!--        -->
 
-        <Button
-            android:id="@+id/chaxun"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="41dp"
-            android:layout_marginBottom="84dp"
-            android:layout_toStartOf="@+id/quanxian"
-            android:background="#ccffff"
-            android:text="疫情动态"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/position_text_view"
-            android:layout_width="396dp"
-            android:layout_height="47dp"
-            android:layout_below="@id/quanxian"
-            android:text="233"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/bt1_1"
-            android:layout_width="162dp"
-            android:layout_height="164dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="0dp"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="0dp"
-            android:background="@drawable/kaishiluyin1"
-            android:foreground="?android:selectableItemBackground"
-            android:gravity="center"
-            android:src="@drawable/kaishiluyin1"
-            android:theme="@style/RippleWhite" />
-        <!--        </RelativeLayout>-->
-    </LinearLayout>
+<!--       -->
+<!--        &lt;!&ndash;        </RelativeLayout>&ndash;&gt;-->
+<!--    </LinearLayout>-->
 </LinearLayout>
