@@ -39,6 +39,10 @@
         <activity
             android:name=".SchoolActivity"
             android:exported="false" />
+        <activity android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity android:name=".LoginActivity"
+            android:exported="false" />
         <activity
             android:name=".epidemicActivity"
             android:exported="false" />

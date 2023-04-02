@@ -42,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
                 super.run();
                 try {
                     sleep(1500);//使程序休眠3秒
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {
