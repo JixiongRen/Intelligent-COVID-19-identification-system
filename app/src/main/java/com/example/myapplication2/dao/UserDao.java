@@ -2,6 +2,7 @@ package com.example.myapplication2.dao;
 
 import com.example.myapplication2.entity.User;
 import com.example.myapplication2.utils.JDBCUtils;
+import com.mysql.jdbc.exceptions.MySQLDataException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -46,6 +47,8 @@ public class UserDao {
     }
 
     public boolean register(User user){
+        boolean flag=false;
+        boolean res = false;
 
         String sql = "insert into users(name,username,password,age,phone) values (?,?,?,?,?)";
 
@@ -69,16 +72,49 @@ public class UserDao {
             int value = pst.executeUpdate(); // 实现MYSQL更新
 
             if(value>0){
-                return true;
+                flag = true;
             }
-
-
+            return true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
             JDBCUtils.close(con);
+            CreatTable(user.getName());
         }
         return false;
+    }
+
+    public void CreatTable(String name) {
+        int res = 0;
+        int aa;
+
+        String sql = "create table " + name + "(TIME TIMESTAMP, RESULT VARCHAR(255))";
+        System.out.println(sql);
+        Connection con = JDBCUtils.getConn();
+
+
+        if (con == null) {
+            System.out.println("Connect FAILED");
+        } else {
+            System.out.println("Connect SUCCESS");
+        }
+
+        try {
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            int value = pst.executeUpdate(); // 实现MYSQL更新
+
+            if (value == 0) {
+                System.out.println("CreatTable Successfully");
+            } else {
+                System.out.println("CreatTable Failed");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            System.out.println("Error occur!");
+        } finally {
+            JDBCUtils.close(con);
+        }
     }
 
     public User findUser(String name){

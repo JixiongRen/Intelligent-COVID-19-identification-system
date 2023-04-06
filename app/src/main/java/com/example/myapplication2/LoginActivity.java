@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private ProgressDialog main_login; // 创建一个名为main_login的进度条变量
     SharedPreferences sharedPreferences; // 创建一个名为sharedPreferences的本地存储变量
+    public static String namestring;
     @Override
     protected void onCreate(Bundle savedInstanceState) { // 重写onCreate方法
         super.onCreate(savedInstanceState);
@@ -127,6 +128,8 @@ public class LoginActivity extends AppCompatActivity {
                 token=token1.getToken(); // 获取token类中的token字符串
             }
         }).start();
+        System.out.println("11User name is " + sharedPreferences.getString("name", ""));
+        namestring = sharedPreferences.getString("name", "");
         return token;
     }
 

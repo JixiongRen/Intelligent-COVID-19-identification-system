@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         if (!dir.exists()) {
             dir.mkdirs();
         }
-
+        System.out.println("User name is " + LoginActivity.namestring);
         listInitial(listaNagran());
         AudioSavePathInDevice = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" + "Audio" + CreateRandomAudioFileName() + ".wav";
         pcmFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music/" + "Audio" + CreateRandomAudioFileName() + ".pcm";

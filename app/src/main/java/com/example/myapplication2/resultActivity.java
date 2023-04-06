@@ -79,7 +79,7 @@ public class resultActivity extends AppCompatActivity {
     private boolean isMono; // true if there is only one channel, i.e. signal is mono, not stereo
     private int duration; //duration of WAV file in seconds
 
-    private String userID = "123456";
+    private String userID = LoginActivity.namestring;
 
     private File WavFile;
     private SpectrogramView mytv3_1;

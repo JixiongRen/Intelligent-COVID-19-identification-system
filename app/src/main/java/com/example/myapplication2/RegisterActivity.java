@@ -255,7 +255,6 @@ public class RegisterActivity extends AppCompatActivity {
             if(msg.what == 2)
             {
                 //startActivity(new Intent(getApplication(),MainActivity.class));
-
                 Intent intent = new Intent();
                 //将想要传递的数据用putExtra封装在intent中
                 intent.putExtra("a","注册");
